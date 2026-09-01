@@ -1,0 +1,228 @@
+<template>
+	<div class="flex pinned-pages items-end">
+		<TransitionGroup class="latest-list flex items-center gap-4" name="anim" tag="div">
+			<n-tag
+				v-for="page of latestSanitized"
+				:key="page.name"
+				:bordered="false"
+				closable
+				round
+				@close="removeLatestPage(page.name)"
+			>
+				<span class="page-name" @click="gotoPage(page.name)">
+					{{ truncateTitle(page.title) }}
+				</span>
+				<template #icon>
+					<div class="icon-box" @click="pinPage(page)">
+						<Icon :name="PinnedIcon" :size="14"></Icon>
+					</div>
+				</template>
+			</n-tag>
+		</TransitionGroup>
+
+		<div v-if="latestSanitized.length && pinned.length" class="divider"></div>
+
+		<TransitionGroup class="pinned-list flex items-center gap-4" name="anim" tag="div">
+			<n-tag
+				v-for="page of pinned"
+				:key="page.name"
+				:bordered="false"
+				closable
+				round
+				@close="removePinnedPage(page.name)"
+			>
+				<div class="page-name" @click="gotoPage(page.name)">
+					{{ truncateTitle(page.title) }}
+				</div>
+			</n-tag>
+		</TransitionGroup>
+		<div class="bar"></div>
+	</div>
+</template>
+
+<script lang="ts" setup>
+import Icon from "@/components/common/Icon.vue"
+import { useStorage, type RemovableRef } from "@vueuse/core"
+import _split from "lodash/split"
+import _takeRight from "lodash/takeRight"
+import _uniqBy from "lodash/uniqBy"
+import { NTag } from "naive-ui"
+import { computed, type ComputedRef } from "vue"
+import { useRouter, type RouteRecordName } from "vue-router"
+
+const PinnedIcon = "tabler:pinned"
+
+interface Page {
+	name: RouteRecordName | string
+	fullPath: string
+	title: string
+}
+
+defineOptions({
+	name: "PinnedPages"
+})
+
+const router = useRouter()
+
+const removeLatestPage = (pageName: RouteRecordName | string) => {
+	latest.value = latest.value.filter(page => page.name !== pageName)
+	return true
+}
+const removePinnedPage = (pageName: RouteRecordName | string) => {
+	pinned.value = pinned.value.filter(page => page.name !== pageName)
+	return true
+}
+const gotoPage = (pageName: RouteRecordName | string) => {
+	router.push({ name: pageName })
+	return true
+}
+const pinPage = (page: Page) => {
+	// Check if the page is already pinned
+	const isPresent = pinned.value.findIndex(p => p.name === page.name) !== -1
+	if (!isPresent) {
+		// Limit the number of pinned pages to 2
+		if (pinned.value.length >= 2) {
+			pinned.value = [page, ...pinned.value.slice(0, 1)] // Add the new page and remove the last one
+		} else {
+			pinned.value = [page, ...pinned.value]
+		}
+	}
+	return true
+}
+const latest: RemovableRef<Page[]> = useStorage<Page[]>("latest-pages", [], sessionStorage)
+const pinned: RemovableRef<Page[]> = useStorage<Page[]>("pinned-pages", [], localStorage)
+
+// Limit latestSanitized to only one page
+const latestSanitized: ComputedRef<Page[]> = computed(() => {
+	return _takeRight(
+		latest.value.filter(page => pinned.value.findIndex(p => p.name === page.name) === -1).reverse(),
+		1 // Only the latest page
+	) as Page[]
+})
+
+// Function to truncate the title to 20 characters and add '...'
+const truncateTitle = (title: string): string => {
+	if (title.length > 10) {
+		return title.slice(0, 10) + "..."
+	}
+	return title
+}
+
+router.afterEach(route => {
+	const title = route.meta?.title || _split(route.name?.toString(), "-").at(-1)
+
+	if (route.name && title) {
+		const page: Page = {
+			name: route.name,
+			fullPath: route.fullPath,
+			title
+		}
+		latest.value = _uniqBy([page, ...latest.value, page], "name")
+	}
+})
+</script>
+
+<style lang="scss" scoped>
+.pinned-pages {
+	position: relative;
+
+	:deep() {
+		.n-tag {
+			background-color: transparent;
+
+			&.n-tag--round {
+				padding: 0;
+				transition: all 0.3s;
+			}
+			.n-tag__icon {
+				margin: 0 !important;
+			}
+			.n-tag__close {
+				overflow: hidden;
+				width: 0px;
+				margin-left: 0;
+				margin-right: 0;
+				transition: all 0.3s;
+			}
+
+			&:hover {
+				background-color: var(--bg-sidebar);
+
+				&.n-tag--round {
+					padding: 0 calc(var(--n-height) / 3.6) 0 calc(var(--n-height) / 3.6);
+				}
+				.n-tag__close {
+					margin-left: 5px;
+					overflow: initial;
+					width: 14px;
+				}
+			}
+		}
+	}
+
+	.pinned-list {
+		.page-name {
+			color: var(--primary-color);
+		}
+	}
+
+	.bar {
+		background-color: var(--bg-sidebar);
+		position: absolute;
+		bottom: -7px;
+		border-radius: 6px;
+		left: 0;
+		width: 100%;
+		height: 4px;
+	}
+
+	.divider {
+		height: 8px;
+		width: 8px;
+		position: relative;
+		top: 9px;
+		z-index: 1;
+		border-radius: 50%;
+		border: 2px solid var(--bg-body);
+		opacity: 0.9;
+		background-color: var(--primary-color);
+		margin: 0 8px;
+	}
+
+	.page-name {
+		cursor: pointer;
+		margin-left: 2px;
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-thickness: 2px;
+			text-decoration-color: var(--primary-color);
+		}
+	}
+	.icon-box {
+		cursor: pointer;
+		transition: color 0.3s;
+		margin-right: 2px;
+
+		&:hover {
+			color: var(--primary-color);
+		}
+	}
+
+	.anim-move,
+	.anim-enter-active,
+	.anim-leave-active {
+		transition: all 0.5s var(--bezier-ease);
+	}
+
+	.anim-enter-from,
+	.anim-leave-to {
+		opacity: 0;
+		transform: scale(0);
+	}
+
+	.anim-leave-active {
+		position: absolute;
+	}
+}
+</style>
