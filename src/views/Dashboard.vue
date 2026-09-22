@@ -1,256 +1,321 @@
 <template>
-	<n-card class="themed-card rounded-xl border shadow-sm" title="Public API Documentation">
-		<div class="themed-panel mb-10 rounded-xl border p-6">
-			<n-text class="themed-muted text-sm leading-relaxed md:text-base" depth="3">
-				Semua endpoint di bawah ini tidak membutuhkan autentikasi dan dapat diakses secara publik.
-			</n-text>
-
-			<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div class="themed-chip flex items-center rounded-lg border p-3 shadow-sm transition-all">
-					<n-tag class="mr-3 font-bold" round size="small" type="info">Base URL</n-tag>
-					<code class="themed-link truncate font-mono text-[11px] md:text-xs">{{ apiBase }}/public</code>
+	<div class="space-y-6">
+		<!-- Welcome & Header Banner -->
+		<div class="relative overflow-hidden rounded-2xl border border-slate-700/80 bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 p-6 shadow-lg">
+			<div class="relative z-10 flex flex-wrap items-center justify-between gap-4">
+				<div class="space-y-1">
+					<div class="flex items-center gap-2">
+						<span class="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30">
+							● Workshop Meja Servis Aktif
+						</span>
+						<span class="text-xs font-mono text-slate-400">{{ todayFormatted }}</span>
+					</div>
+					<h1 class="text-2xl font-black tracking-tight text-white md:text-3xl">
+						Selamat Datang, {{ authUser?.name || "Teknisi" }}!
+					</h1>
+					<p class="text-xs text-slate-300 md:text-sm max-w-2xl">
+						Sistem Technical Tracking & Operational Workshop Toko Servis Smartphone. Pantau antrean aktif meja teknisi dan rekam jejak pengerjaan secara real-time.
+					</p>
 				</div>
-				<div class="themed-chip flex items-center rounded-lg border p-3 shadow-sm transition-all">
-					<n-tag class="mr-3 font-bold" round size="small" type="info">File URL</n-tag>
-					<code class="themed-link truncate font-mono text-[11px] md:text-xs">{{ apiBase }}/storage</code>
+
+				<div class="flex flex-wrap items-center gap-2">
+					<n-button type="primary" size="medium" @click="$router.push({ name: 'ServiceTickets' })">
+						<template #icon><Icon name="tabler:layout-kanban" :size="18" /></template>
+						Buka Meja Kerja
+					</n-button>
+					<n-button secondary size="medium" :loading="loading" @click="fetchDashboardData(true)">
+						<template #icon><Icon name="tabler:refresh" :size="18" /></template>
+						Refresh Data
+					</n-button>
 				</div>
 			</div>
 		</div>
 
-		<div class="space-y-12">
-			<section>
-				<div class="themed-divider mb-6 flex items-center gap-3 border-b pb-2">
-					<div class="h-6 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]"></div>
-					<h3 class="themed-title text-xl font-extrabold tracking-tight">Landing Page</h3>
-				</div>
-
-				<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-					<div v-for="endpoint in landingEndpoints" :key="endpoint.path" class="endpoint-container">
-						<n-collapse arrow-placement="right">
-							<n-collapse-item
-								class="themed-chip overflow-hidden rounded-lg border shadow-sm transition-all duration-300 hover:shadow-md"
-								:name="endpoint.path"
-							>
-								<template #header>
-									<div class="flex items-center gap-3">
-										<n-tag class="px-2 font-black" round size="small" strong type="success">
-											GET
-										</n-tag>
-										<code
-											class="truncate font-mono text-xs font-bold tracking-tighter text-blue-700"
-										>
-											{{ endpoint.path }}
-										</code>
-									</div>
-								</template>
-
-								<div class="themed-section border-t p-4">
-									<n-text class="themed-muted mb-3 block text-[11px] font-medium" depth="3">
-										{{ endpoint.desc }}
-									</n-text>
-									<div class="group relative">
-										<span
-											class="themed-muted absolute right-2 top-2 text-[9px] font-bold uppercase tracking-widest opacity-0 transition-opacity group-hover:opacity-100"
-										>
-											Response
-										</span>
-										<pre
-											class="scrollbar-thin overflow-x-auto rounded-lg border border-slate-800 bg-slate-900 p-4 font-mono text-[10px] leading-normal text-blue-300"
-										><code>{{ examples[endpoint.exampleKey] }}</code></pre>
-									</div>
-								</div>
-							</n-collapse-item>
-						</n-collapse>
+		<!-- 4 Top Summary Metric Cards -->
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			<!-- Card 1: Antrean Aktif -->
+			<div class="group relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-blue-500/60 hover:shadow-md">
+				<div class="flex items-start justify-between">
+					<span class="text-xs font-bold uppercase tracking-wider text-blue-300">Antrean Aktif Meja Kerja</span>
+					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
+						<Icon name="tabler:clock-hour-4" :size="20" />
 					</div>
 				</div>
-			</section>
+				<div class="mt-3 flex items-baseline gap-2">
+					<span class="text-3xl font-black tracking-tight text-white font-mono">
+						{{ summaryData.total_antrean_aktif }}
+					</span>
+					<span class="text-xs text-slate-400">Unit Sedang Diproses</span>
+				</div>
+				<div class="mt-2 text-[11px] text-blue-300/80">
+					Diterima, Diagnosis, Menunggu Part, Pengerjaan
+				</div>
+			</div>
+
+			<!-- Card 2: Selesai Hari Ini -->
+			<div class="group relative overflow-hidden rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-emerald-500/60 hover:shadow-md">
+				<div class="flex items-start justify-between">
+					<span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Selesai Hari Ini</span>
+					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+						<Icon name="tabler:circle-check" :size="20" />
+					</div>
+				</div>
+				<div class="mt-3 flex items-baseline gap-2">
+					<span class="text-3xl font-black tracking-tight text-white font-mono">
+						{{ summaryData.selesai_hari_ini }}
+					</span>
+					<span class="text-xs text-slate-400">Unit Siap / Diserahkan</span>
+				</div>
+				<div class="mt-2 text-[11px] text-emerald-300/80">
+					Total selesai dikerjakan teknisi hari ini
+				</div>
+			</div>
+
+			<!-- Card 3: Menunggu Diterima -->
+			<div class="group relative overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-amber-500/60 hover:shadow-md">
+				<div class="flex items-start justify-between">
+					<span class="text-xs font-bold uppercase tracking-wider text-amber-300">Menunggu Pengambilan</span>
+					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
+						<Icon name="tabler:device-mobile-check" :size="20" />
+					</div>
+				</div>
+				<div class="mt-3 flex items-baseline gap-2">
+					<span class="text-3xl font-black tracking-tight text-white font-mono">
+						{{ summaryData.menunggu_diterima }}
+					</span>
+					<span class="text-xs text-slate-400">Unit Menunggu Customer</span>
+				</div>
+				<div class="mt-2 text-[11px] text-amber-300/80">
+					Pengerjaan selesai, siap diambil pelanggan
+				</div>
+			</div>
+
+			<!-- Card 4: Batal Hari Ini -->
+			<div class="group relative overflow-hidden rounded-xl border border-rose-500/30 bg-gradient-to-br from-rose-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-rose-500/60 hover:shadow-md">
+				<div class="flex items-start justify-between">
+					<span class="text-xs font-bold uppercase tracking-wider text-rose-300">Batal Hari Ini</span>
+					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/20 text-rose-400">
+						<Icon name="tabler:circle-x" :size="20" />
+					</div>
+				</div>
+				<div class="mt-3 flex items-baseline gap-2">
+					<span class="text-3xl font-black tracking-tight text-white font-mono">
+						{{ summaryData.batal_hari_ini }}
+					</span>
+					<span class="text-xs text-slate-400">Unit Dibatalkan</span>
+				</div>
+				<div class="mt-2 text-[11px] text-rose-300/80">
+					Unit batal servis / sparepart tidak tersedia
+				</div>
+			</div>
 		</div>
-	</n-card>
+
+		<!-- Middle Section: Active Queue Breakdown & Quick Shortcuts -->
+		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+			<!-- Active Queue Stage Breakdown -->
+			<n-card class="rounded-xl border border-slate-700/60 shadow-sm lg:col-span-2" title="Distribusi Antrean Aktif Meja Teknisi">
+				<div class="space-y-4">
+					<div
+						v-for="stage in activeStagesList"
+						:key="stage.name"
+						class="space-y-1.5 rounded-lg border border-slate-700/40 bg-slate-800/40 p-3"
+					>
+						<div class="flex items-center justify-between text-xs">
+							<div class="flex items-center gap-2">
+								<span class="h-2 w-2 rounded-full" :style="{ backgroundColor: stage.color }"></span>
+								<span class="font-bold text-slate-200">{{ stage.name }}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="font-mono font-bold text-white text-sm">{{ stage.count }} Unit</span>
+								<span class="text-[10px] text-slate-400">({{ stage.percentage }}%)</span>
+							</div>
+						</div>
+
+						<div class="h-2 w-full overflow-hidden rounded-full bg-slate-700/60">
+							<div
+								class="h-full rounded-full transition-all duration-500"
+								:style="{
+									width: `${stage.percentage}%`,
+									backgroundColor: stage.color
+								}"
+							></div>
+						</div>
+					</div>
+				</div>
+			</n-card>
+
+			<!-- Quick Actions & Status Summary -->
+			<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Akses Cepat & Navigasi">
+				<div class="space-y-3">
+					<router-link
+						:to="{ name: 'ServiceTickets' }"
+						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-indigo-500 hover:bg-slate-800 hover:shadow"
+					>
+						<div class="flex items-center gap-3">
+							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">
+								<Icon name="tabler:tool" :size="20" />
+							</div>
+							<div>
+								<div class="text-xs font-bold text-slate-100">Meja Kerja Servis HP</div>
+								<div class="text-[11px] text-slate-400">Kanban Board & Riwayat Tiket</div>
+							</div>
+						</div>
+						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
+					</router-link>
+
+					<router-link
+						:to="{ name: 'Masterdata-Customer' }"
+						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-sky-500 hover:bg-slate-800 hover:shadow"
+					>
+						<div class="flex items-center gap-3">
+							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/20 text-sky-400">
+								<Icon name="tabler:users" :size="20" />
+							</div>
+							<div>
+								<div class="text-xs font-bold text-slate-100">Daftar Pelanggan</div>
+								<div class="text-[11px] text-slate-400">Kontak WhatsApp & Alamat</div>
+							</div>
+						</div>
+						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
+					</router-link>
+
+					<router-link
+						:to="{ name: 'Analytics' }"
+						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-emerald-500 hover:bg-slate-800 hover:shadow"
+					>
+						<div class="flex items-center gap-3">
+							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+								<Icon name="tabler:chart-bar" :size="20" />
+							</div>
+							<div>
+								<div class="text-xs font-bold text-slate-100">Laporan & Analitik</div>
+								<div class="text-[11px] text-slate-400">Ranking Sparepart & Kinerja Teknisi</div>
+							</div>
+						</div>
+						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
+					</router-link>
+				</div>
+			</n-card>
+		</div>
+
+		<!-- Bottom Section: Recent Activity Logs Feed -->
+		<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Log Aktivitas Terbaru (Audit Trail)">
+			<div v-if="recentActivities.length === 0" class="py-8 text-center text-xs text-slate-400">
+				Belum ada aktivitas tercatat.
+			</div>
+
+			<div v-else class="space-y-2.5">
+				<div
+					v-for="act in recentActivities"
+					:key="act.id"
+					class="flex items-start justify-between gap-3 rounded-lg border border-slate-700/50 bg-slate-800/40 p-3"
+				>
+					<div class="flex items-start gap-3">
+						<div class="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+							<Icon name="tabler:activity" :size="15" />
+						</div>
+						<div>
+							<div class="text-xs font-bold text-slate-200">
+								{{ act.user?.name || "Sistem" }}
+								<span class="ml-1 rounded bg-slate-700 px-1.5 py-0.2 text-[10px] font-mono text-slate-300">
+									{{ act.action }}
+								</span>
+							</div>
+							<div class="text-xs text-slate-300 mt-0.5">{{ act.description }}</div>
+						</div>
+					</div>
+
+					<div class="text-right text-[11px] font-mono text-slate-400 whitespace-nowrap">
+						{{ formatRelativeTime(act.created_at) }}
+					</div>
+				</div>
+			</div>
+		</n-card>
+	</div>
 </template>
 
-<script setup>
-import { NCard, NCollapse, NCollapseItem, NTag, NText } from "naive-ui"
+<script setup lang="ts">
+import Icon from "@/components/common/Icon.vue"
+import { useAnalyticsStore } from "@/stores/analytics"
+import { useAuthStore } from "@/stores/auth"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import { NButton, NCard, useMessage } from "naive-ui"
+import { computed, onMounted, ref } from "vue"
 
-const apiBase = import.meta.env.VITE_API_BASE_URL + "/api" || "/api"
+dayjs.extend(relativeTime)
 
-const landingEndpoints = [
-	{ path: "/divisions", desc: "Daftar divisi & subdivisi aktif.", exampleKey: "divisions" },
-	{ path: "/officers?year=2026", desc: "Daftar pengurus per tahun (default tahun ini).", exampleKey: "officers" },
-	{
-		path: "/activists?subdivision_id=1&year=2026",
-		desc: "Daftar aktivis berdasarkan subdivisi & tahun (default tahun ini).",
-		exampleKey: "activistsBySubdivision"
-	},
-	{ path: "/events?year=2025", desc: "Daftar event aktif (default tahun ini).", exampleKey: "events" },
-	{
-		path: "/articles?search=BSLC&type=Event&page=1&pageSize=10",
-		desc: "Artikel yang sudah dipublish & aktif dengan pagination; filter optional `type` (Event/Info).",
-		exampleKey: "articles"
-	},
-	{
-		path: "/variables",
-		desc: "Ambil variables berdasarkan array `names` di query/body.",
-		exampleKey: "variablesResponse"
+const message = useMessage()
+const authStore = useAuthStore()
+const analyticsStore = useAnalyticsStore()
+
+const loading = ref(false)
+
+const authUser = computed(() => authStore.user)
+const todayFormatted = computed(() => dayjs().format("dddd, DD MMMM YYYY"))
+
+const dashboard = computed(() => analyticsStore.dashboard)
+
+const summaryData = computed(() => {
+	return {
+		total_antrean_aktif: dashboard.value?.summary?.total_antrean_aktif ?? 0,
+		selesai_hari_ini: dashboard.value?.summary?.selesai_hari_ini ?? 0,
+		batal_hari_ini: dashboard.value?.summary?.batal_hari_ini ?? 0,
+		menunggu_diterima: dashboard.value?.summary?.menunggu_diterima ?? 0,
+		total_semua_tiket: dashboard.value?.summary?.total_semua_tiket ?? 0
 	}
-]
+})
 
-const examples = {
-	divisions: JSON.stringify(
-		[
-			{
-				id: 1,
-				name: "Learning",
-				description:
-					"Divisi yang mengatur dan me-monitoring kegiatan mentoring BSLC serta menyiapkan perlengkapan kegiatan.",
-				subdivisions: [
-					{
-						id: 1,
-						division_id: 1,
-						name: "Mentoring",
-						description: "Mengelola operasional belajar mengajar antara Mentor dan Mentee."
-					}
-				]
-			}
-		],
-		null,
-		2
-	),
-	officers: JSON.stringify(
-		[
-			{ id: 1, title: "Chairman of BSLC", name: "Ana", image_path: null, year: 2026 },
-			{ id: 2, title: "General Secretary of BSLC", name: "Ana", image_path: null, year: 2026 }
-		],
-		null,
-		2
-	),
-	activistsBySubdivision: JSON.stringify(
-		[
-			{
-				id: 1,
-				name: "Nama Aktivis",
-				year: 2026,
-				subdivision_id: 1,
-				image_path: "/storage/activists/contoh.jpg"
-			}
-		],
-		null,
-		2
-	),
-	events: JSON.stringify(
-		[
-			{
-				id: 1,
-				title: "BSLC Orientation 2025",
-				description: "Acara perkenalan anggota baru BSLC dan overview program tahun ini.",
-				image_path: null,
-				year: 2025
-			}
-		],
-		null,
-		2
-	),
-	articles: JSON.stringify(
-		{
-			current_page: 1,
-			data: [
-				{
-					id: 1,
-					title: "Selamat Datang di BSLC",
-					slug: "selamat-datang-di-bslc",
-					thumbnail: null,
-					type: "Event",
-					status: "published",
-					created_at: "2025-01-01T00:00:00.000000Z"
-				}
-			],
-			first_page_url: "http://localhost:8000/api/public/articles?page=1",
-			from: 1,
-			last_page: 1,
-			last_page_url: "http://localhost:8000/api/public/articles?page=1",
-			links: [
-				{ url: null, label: "&laquo; Sebelumnya", page: null, active: false },
-				{
-					url: "http://localhost:8000/api/public/articles?page=1",
-					label: "1",
-					page: 1,
-					active: true
-				},
-				{ url: null, label: "Berikutnya &raquo;", page: null, active: false }
-			],
-			next_page_url: null,
-			path: "http://localhost:8000/api/public/articles",
-			per_page: 10,
-			prev_page_url: null,
-			to: 1,
-			total: 1
-		},
-		null,
-		2
-	),
-	variablesResponse: JSON.stringify(
-		[
-			{
-				id: 1,
-				name: "slogan",
-				value: "Belajar Bersama, Berkarya Bersama",
-				image_path: null
-			}
-		],
-		null,
-		2
-	)
+const stageColorMap: Record<string, string> = {
+	"Diterima": "#3b82f6",
+	"Diagnosis": "#a855f7",
+	"Menunggu Part": "#f59e0b",
+	"Pengerjaan": "#06b6d4",
+	"Menunggu Diterima": "#f97316"
 }
+
+const activeStagesList = computed(() => {
+	const total = summaryData.value.total_antrean_aktif || 1
+	const stages = ["Diterima", "Diagnosis", "Menunggu Part", "Pengerjaan", "Menunggu Diterima"]
+	const rawList = dashboard.value?.active_queue_breakdown || []
+
+	return stages.map(stName => {
+		const found = rawList.find((item: any) => item.status === stName)
+		const count = found ? Number(found.count) : 0
+		const percentage = summaryData.value.total_antrean_aktif > 0
+			? Math.round((count / total) * 100)
+			: 0
+
+		return {
+			name: stName,
+			count,
+			percentage,
+			color: stageColorMap[stName] || "#94a3b8"
+		}
+	})
+})
+
+const recentActivities = computed(() => {
+	return dashboard.value?.recent_activities || []
+})
+
+const formatRelativeTime = (timeStr?: string) => {
+	if (!timeStr) return "-"
+	return dayjs(timeStr).fromNow()
+}
+
+const fetchDashboardData = async (forceRefresh = false) => {
+	loading.value = true
+	try {
+		await analyticsStore.fetchDashboard(forceRefresh)
+	} catch (err: any) {
+		message.error(err.response?.data?.message || err.message || "Gagal memuat dashboard")
+	} finally {
+		loading.value = false
+	}
+}
+
+onMounted(() => {
+	fetchDashboardData()
+})
 </script>
-
-<style scoped>
-/* Styling Header Collapse Naive UI */
-:deep(.n-collapse-item__header) {
-	padding: 14px !important;
-	font-size: 13px;
-}
-
-:deep(.n-collapse-item__content-inner) {
-	padding: 0 !important; /* Hilangkan padding default agar background slate full */
-}
-
-/* Custom Scrollbar for Code Blocks */
-pre::-webkit-scrollbar {
-	height: 4px;
-}
-pre::-webkit-scrollbar-thumb {
-	background: #334155;
-	border-radius: 10px;
-}
-
-.themed-card {
-	border-color: var(--border-color);
-}
-.themed-panel {
-	border-color: var(--border-color);
-	background: var(--hover-color);
-}
-.themed-chip {
-	border-color: var(--border-color);
-	background: var(--card-color);
-}
-.themed-divider {
-	border-color: var(--border-color);
-}
-.themed-section {
-	border-color: var(--border-color);
-	background: color-mix(in srgb, var(--hover-color) 70%, transparent);
-}
-.themed-title {
-	color: var(--text-color-1);
-}
-.themed-muted {
-	color: var(--text-color-3);
-}
-.themed-link {
-	color: var(--primary-color);
-}
-.themed-coming {
-	border-color: color-mix(in srgb, #f97316 50%, var(--divider-color));
-	background: color-mix(in srgb, #f97316 10%, var(--card-color));
-}
-</style>

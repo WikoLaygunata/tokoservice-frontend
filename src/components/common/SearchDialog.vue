@@ -89,11 +89,12 @@ const RoleIcon = "tabler:shield"
 const UserIcon = "tabler:user"
 const VariableIcon = "tabler:variable"
 const NoteIcon = "tabler:notes"
-const ArtikelIcon = "tabler:file-text"
-const DivisiIcon = "tabler:building-community"
-const PengurusIcon = "tabler:user-circle"
-const EventIcon = "tabler:calendar"
-const ImageIcon = "tabler:photo"
+const ToolIcon = "tabler:tool"
+const CustomerIcon = "tabler:users"
+const WorkerIcon = "tabler:user-check"
+const PhoneBrandIcon = "tabler:device-mobile"
+const ServiceCatIcon = "tabler:cpu"
+const WaTemplateIcon = "tabler:brand-whatsapp"
 const SchoolIcon = "tabler:school"
 const UsersIcon = "tabler:users"
 const ProfileIcon = "tabler:user-circle"
@@ -209,76 +210,66 @@ const groups = ref<Groups>([
 		]
 	},
 	{
-		name: "CMS",
+		name: "Toko Servis",
 		items: [
 			{
-				iconName: ArtikelIcon,
+				iconName: ToolIcon,
 				iconImage: null,
-				key: "cms-artikel",
-				title: "Artikel",
-				label: "/cms/artikel",
+				key: "service-tickets",
+				title: "Meja Servis HP",
+				label: "/service-tickets",
 				action() {
-					router.push({ name: "CMS-Artikel" })
+					router.push({ name: "ServiceTickets" })
 				}
 			},
 			{
-				iconName: DivisiIcon,
+				iconName: CustomerIcon,
 				iconImage: null,
-				key: "cms-divisi",
-				title: "Divisi",
-				label: "/cms/divisi",
+				key: "masterdata-customer",
+				title: "Pelanggan",
+				label: "/masterdata/customer",
 				action() {
-					router.push({ name: "CMS-Divisi" })
+					router.push({ name: "Masterdata-Customer" })
 				}
 			},
 			{
-				iconName: DivisiIcon,
+				iconName: WorkerIcon,
 				iconImage: null,
-				key: "cms-subdivisi",
-				title: "Subdivisi",
-				label: "/cms/subdivisi",
+				key: "masterdata-worker",
+				title: "Teknisi",
+				label: "/masterdata/worker",
 				action() {
-					router.push({ name: "CMS-Subdivisi" })
+					router.push({ name: "Masterdata-Worker" })
 				}
 			},
 			{
-				iconName: UserIcon,
+				iconName: PhoneBrandIcon,
 				iconImage: null,
-				key: "cms-aktivis",
-				title: "Aktivis",
-				label: "/cms/aktivis",
+				key: "masterdata-phone-brand",
+				title: "Merek HP",
+				label: "/masterdata/phone-brand",
 				action() {
-					router.push({ name: "CMS-Aktivis" })
+					router.push({ name: "Masterdata-PhoneBrand" })
 				}
 			},
 			{
-				iconName: PengurusIcon,
+				iconName: ServiceCatIcon,
 				iconImage: null,
-				key: "cms-pengurus",
-				title: "Pengurus",
-				label: "/cms/pengurus",
+				key: "masterdata-service-category",
+				title: "Kategori Servis",
+				label: "/masterdata/service-category",
 				action() {
-					router.push({ name: "CMS-Pengurus" })
+					router.push({ name: "Masterdata-ServiceCategory" })
 				}
 			},
 			{
-				iconName: EventIcon,
+				iconName: WaTemplateIcon,
 				iconImage: null,
-				key: "cms-event",
-				title: "Event",
-				label: "/cms/event",
+				key: "masterdata-wa-template",
+				title: "Template WhatsApp",
+				label: "/masterdata/wa-template",
 				action() {
-					router.push({ name: "CMS-Event" })
-				}
-			},
-			{
-				iconName: ImageIcon,
-				iconImage: null,
-				key: "cms-image",
-				title: "Image",
-				label: "/cms/image",
-				action() {
-					router.push({ name: "CMS-Image" })
+					router.push({ name: "Masterdata-WaTemplate" })
 				}
 			}
 		]

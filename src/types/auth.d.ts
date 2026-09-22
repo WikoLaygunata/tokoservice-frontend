@@ -1,5 +1,5 @@
-export type Role = "all" | "admin" | "moderator"
-export type Roles = role | role[]
+export type Role = "all" | "admin" | "owner" | "technician" | "frontdesk"
+export type Roles = Role | Role[]
 
 export interface RouteMetaAuth {
 	checkAuth?: boolean

@@ -9,13 +9,13 @@ const router = createRouter({
 			path: "/",
 			name: "Dashboard",
 			component: () => import("@/views/Dashboard.vue"),
-			meta: { title: "Dashboard", auth: true, roles: "all" }
+			meta: { title: "Dashboard Workshop", auth: true, roles: "all" }
 		},
 		{
-			path: "/analytics",
-			name: "Analytics",
-			component: () => import("@/views/Analytics.vue"),
-			meta: { title: "Analytics", auth: true, roles: "all" }
+			path: "/service-tickets",
+			name: "ServiceTickets",
+			component: () => import("@/views/ServiceTicket/Index.vue"),
+			meta: { title: "Meja Servis & Transaksi", auth: true, roles: "all" }
 		},
 		{
 			path: "/masterdata",
@@ -25,83 +25,67 @@ const router = createRouter({
 			},
 			children: [
 				{
+					path: "customer",
+					name: "Masterdata-Customer",
+					component: () => import("@/views/Masterdata/Customer/Index.vue"),
+					meta: { title: "Pelanggan", auth: true, roles: "all" }
+				},
+				{
+					path: "worker",
+					name: "Masterdata-Worker",
+					component: () => import("@/views/Masterdata/Worker/Index.vue"),
+					meta: { title: "Teknisi", auth: true, roles: "all" }
+				},
+				{
+					path: "phone-brand",
+					name: "Masterdata-PhoneBrand",
+					component: () => import("@/views/Masterdata/PhoneBrand/Index.vue"),
+					meta: { title: "Merek HP", auth: true, roles: "all" }
+				},
+				{
+					path: "service-category",
+					name: "Masterdata-ServiceCategory",
+					component: () => import("@/views/Masterdata/ServiceCategory/Index.vue"),
+					meta: { title: "Kategori Servis", auth: true, roles: "all" }
+				},
+				{
+					path: "wa-template",
+					name: "Masterdata-WaTemplate",
+					component: () => import("@/views/Masterdata/WaTemplate/Index.vue"),
+					meta: { title: "Template WhatsApp", auth: true, roles: "all" }
+				},
+				{
 					path: "role",
 					name: "Masterdata-Role",
 					component: () => import("@/views/Masterdata/UserDanHakAkses/Role/Index.vue"),
-					meta: { title: "Role", auth: true, roles: "all" }
+					meta: { title: "Role & Hak Akses", auth: true, roles: "all" }
 				},
 				{
 					path: "user",
 					name: "Masterdata-User",
 					component: () => import("@/views/Masterdata/UserDanHakAkses/User/Index.vue"),
-					meta: { title: "User", auth: true, roles: "all" }
+					meta: { title: "User Pengguna", auth: true, roles: "all" }
 				},
 				{
 					path: "variable",
 					name: "Masterdata-Variable",
 					component: () => import("@/views/Masterdata/Variable/Index.vue"),
-					meta: { title: "Variable", auth: true, roles: "all" }
+					meta: { title: "Pengaturan Toko", auth: true, roles: "all" }
 				},
 				{
 					path: "note",
 					name: "Masterdata-Note",
 					component: () => import("@/views/Masterdata/Note/Index.vue"),
-					meta: { title: "Note", auth: true, roles: "all" }
+					meta: { title: "Catatan SOP", auth: true, roles: "all" }
 				}
 			]
 		},
 		{
-			path: "/cms",
-			meta: {
-				auth: true,
-				roles: "all"
-			},
-			children: [
-				{
-					path: "artikel",
-					name: "CMS-Artikel",
-					component: () => import("@/views/CMS/Artikel/Index.vue"),
-					meta: { title: "Artikel", auth: true, roles: "all" }
-				},
-				{
-					path: "divisi",
-					name: "CMS-Divisi",
-					component: () => import("@/views/CMS/Divisi/Index.vue"),
-					meta: { title: "Divisi", auth: true, roles: "all" }
-				},
-				{
-					path: "subdivisi",
-					name: "CMS-Subdivisi",
-					component: () => import("@/views/CMS/Subdivisi/Index.vue"),
-					meta: { title: "Subdivisi", auth: true, roles: "all" }
-				},
-				{
-					path: "aktivis",
-					name: "CMS-Aktivis",
-					component: () => import("@/views/CMS/Activist/Index.vue"),
-					meta: { title: "Aktivis", auth: true, roles: "all" }
-				},
-				{
-					path: "pengurus",
-					name: "CMS-Pengurus",
-					component: () => import("@/views/CMS/Pengurus/Index.vue"),
-					meta: { title: "Pengurus", auth: true, roles: "all" }
-				},
-				{
-					path: "event",
-					name: "CMS-Event",
-					component: () => import("@/views/CMS/Event/Index.vue"),
-					meta: { title: "Event", auth: true, roles: "all" }
-				},
-				{
-					path: "image",
-					name: "CMS-Image",
-					component: () => import("@/views/CMS/Image/Index.vue"),
-					meta: { title: "Image", auth: true, roles: "all" }
-				}
-			]
+			path: "/analytics",
+			name: "Analytics",
+			component: () => import("@/views/Analytics.vue"),
+			meta: { title: "Laporan & Analitik", auth: true, roles: "all" }
 		},
-
 		{
 			path: "/login",
 			name: "Login",

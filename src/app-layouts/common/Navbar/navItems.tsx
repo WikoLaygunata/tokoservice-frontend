@@ -4,90 +4,78 @@ import { RouterLink } from "vue-router"
 
 export default [
 	{
-		label: () => h(RouterLink, { to: { name: "Dashboard" } }, { default: () => "Home" }),
+		label: () => h(RouterLink, { to: { name: "Dashboard" } }, { default: () => "Dashboard" }),
 		key: "Dashboard",
 		icon: renderIcon("tabler:layout-dashboard")
 	},
 	{
-		label: "CMS",
-		key: "CMS",
-		icon: renderIcon("tabler:file-text"),
-		children: [
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Artikel" } }, { default: () => "Artikel" }),
-				key: "CMS-Artikel",
-				permission: "read-article"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Divisi" } }, { default: () => "Divisi" }),
-				key: "CMS-Divisi",
-				permission: "read-division"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Subdivisi" } }, { default: () => "Subdivisi" }),
-				key: "CMS-Subdivisi",
-				permission: "read-subdivision"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Aktivis" } }, { default: () => "Aktivis" }),
-				key: "CMS-Aktivis",
-				permission: "read-activist"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Pengurus" } }, { default: () => "Pengurus" }),
-				key: "CMS-Pengurus",
-				permission: "read-officer"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Event" } }, { default: () => "Event" }),
-				key: "CMS-Event",
-				permission: "read-event"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "CMS-Image" } }, { default: () => "Image" }),
-				key: "CMS-Image",
-				permission: "read-image"
-			}
-		]
+		label: () => h(RouterLink, { to: { name: "ServiceTickets" } }, { default: () => "Meja Servis" }),
+		key: "ServiceTickets",
+		icon: renderIcon("tabler:tool"),
+		permission: "read-service_ticket"
 	},
-
 	{
-		label: "Masterdata",
+		label: "Master Data",
 		key: "Masterdata",
-		icon: renderIcon("tabler:server-bolt"),
+		icon: renderIcon("tabler:database"),
 		children: [
 			{
-				label: "User & Hak Akses",
+				label: () => h(RouterLink, { to: { name: "Masterdata-Customer" } }, { default: () => "Pelanggan" }),
+				key: "Masterdata-Customer",
+				permission: "read-customer"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-Worker" } }, { default: () => "Teknisi" }),
+				key: "Masterdata-Worker",
+				permission: "read-worker"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-PhoneBrand" } }, { default: () => "Merek HP" }),
+				key: "Masterdata-PhoneBrand",
+				permission: "read-phone_brand"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-ServiceCategory" } }, { default: () => "Kategori Servis" }),
+				key: "Masterdata-ServiceCategory",
+				permission: "read-service_category"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-WaTemplate" } }, { default: () => "Template WA" }),
+				key: "Masterdata-WaTemplate",
+				permission: "read-wa_template"
+			},
+			{
+				label: "User & Akses",
 				key: "Masterdata-UserDanHakAkses",
 				children: [
 					{
-						label: () => h(RouterLink, { to: { name: "Masterdata-Role" } }, { default: () => "Role" }),
+						label: () => h(RouterLink, { to: { name: "Masterdata-Role" } }, { default: () => "Role & Hak Akses" }),
 						key: "Masterdata-Role",
 						permission: "read-role"
 					},
 					{
-						label: () => h(RouterLink, { to: { name: "Masterdata-User" } }, { default: () => "User" }),
+						label: () => h(RouterLink, { to: { name: "Masterdata-User" } }, { default: () => "User Pengguna" }),
 						key: "Masterdata-User",
 						permission: "read-user"
 					}
 				]
 			},
 			{
-				label: () => h(RouterLink, { to: { name: "Masterdata-Variable" } }, { default: () => "Variable" }),
+				label: () => h(RouterLink, { to: { name: "Masterdata-Variable" } }, { default: () => "Pengaturan Toko" }),
 				key: "Masterdata-Variable",
 				permission: "read-variable"
 			},
 			{
-				label: () => h(RouterLink, { to: { name: "Masterdata-Note" } }, { default: () => "Note" }),
+				label: () => h(RouterLink, { to: { name: "Masterdata-Note" } }, { default: () => "Catatan SOP" }),
 				key: "Masterdata-Note",
 				permission: "read-note"
 			}
 		]
 	},
 	{
-		label: () => h(RouterLink, { to: { name: "Analytics" } }, { default: () => "Analytics" }),
+		label: () => h(RouterLink, { to: { name: "Analytics" } }, { default: () => "Laporan & Analitik" }),
 		key: "Analytics",
 		icon: renderIcon("tabler:chart-bar"),
 		permission: "view-analytics"
-	},
+	}
 ]
