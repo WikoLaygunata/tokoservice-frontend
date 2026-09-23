@@ -30,13 +30,7 @@
 
 		<!-- Tabs View: Board vs Table -->
 		<n-tabs v-model:value="currentTab" type="segment" animated>
-			<n-tab-pane name="board" tab="Kanban Antrean Aktif">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:layout-kanban" :size="16" />
-						<span>Board View (Kanban Aktif)</span>
-					</div>
-				</template>
+			<n-tab-pane name="board" :tab="renderTab('tabler:layout-kanban', 'Board View (Kanban Aktif)')">
 				<BoardView
 					ref="boardViewRef"
 					@edit-ticket="openEditTicket"
@@ -46,13 +40,7 @@
 				/>
 			</n-tab-pane>
 
-			<n-tab-pane name="table" tab="Seluruh Riwayat Tiket">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:table" :size="16" />
-						<span>Table View (Semua Riwayat)</span>
-					</div>
-				</template>
+			<n-tab-pane name="table" :tab="renderTab('tabler:table', 'Table View (Semua Riwayat)')">
 				<TableView
 					ref="tableViewRef"
 					@edit-ticket="openEditTicket"
@@ -90,7 +78,7 @@
 import Can from "@/components/common/Can.vue"
 import Icon from "@/components/common/Icon.vue"
 import { NButton, NCard, NTabPane, NTabs } from "naive-ui"
-import { ref } from "vue"
+import { h, ref } from "vue"
 import BoardView from "./BoardView.vue"
 import FormDrawer from "./FormDrawer.vue"
 import JobSheetModal from "./JobSheetModal.vue"
@@ -98,6 +86,12 @@ import TableView from "./TableView.vue"
 import WhatsAppModal from "./WhatsAppModal.vue"
 
 const currentTab = ref<"board" | "table">("board")
+
+const renderTab = (icon: string, label: string) => () =>
+	h("div", { class: "flex items-center gap-2" }, [
+		h(Icon, { name: icon, size: 16 }),
+		h("span", label)
+	])
 
 const boardViewRef = ref<any>(null)
 const tableViewRef = ref<any>(null)

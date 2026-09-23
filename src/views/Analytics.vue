@@ -39,14 +39,7 @@
 		<!-- Analytics Tabs -->
 		<n-tabs v-model:value="activeTab" type="segment" animated>
 			<!-- TAB 1: Sparepart & Kategori Servis -->
-			<n-tab-pane name="spareparts" tab="Analitik Sparepart">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:cpu" :size="16" />
-						<span>Penggunaan Sparepart</span>
-					</div>
-				</template>
-
+			<n-tab-pane name="spareparts" :tab="renderTab('tabler:cpu', 'Penggunaan Sparepart')">
 				<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Ranking Penggunaan Sparepart & Jasa Servis">
 					<n-spin :show="loading">
 						<div v-if="sparepartsData.length === 0" class="py-12 text-center text-xs text-slate-400">
@@ -84,14 +77,7 @@
 			</n-tab-pane>
 
 			<!-- TAB 2: Distribusi Merek HP -->
-			<n-tab-pane name="brands" tab="Distribusi Merek HP">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:device-mobile" :size="16" />
-						<span>Distribusi Merek HP</span>
-					</div>
-				</template>
-
+			<n-tab-pane name="brands" :tab="renderTab('tabler:device-mobile', 'Distribusi Merek HP')">
 				<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Pangsa Pasar Merek Smartphone Masuk Servis">
 					<n-spin :show="loading">
 						<div v-if="phoneBrandsData.length === 0" class="py-12 text-center text-xs text-slate-400">
@@ -138,14 +124,7 @@
 			</n-tab-pane>
 
 			<!-- TAB 3: Kinerja Teknisi -->
-			<n-tab-pane name="workers" tab="Kinerja Teknisi">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:user-check" :size="16" />
-						<span>Performa Teknisi</span>
-					</div>
-				</template>
-
+			<n-tab-pane name="workers" :tab="renderTab('tabler:user-check', 'Performa Teknisi')">
 				<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Matriks Performa & Efisiensi Pengerjaan Teknisi">
 					<n-spin :show="loading">
 						<div v-if="workersData.length === 0" class="py-12 text-center text-xs text-slate-400">
@@ -166,14 +145,7 @@
 			</n-tab-pane>
 
 			<!-- TAB 4: Histori Pelanggan -->
-			<n-tab-pane name="customers" tab="Rekap Histori Pelanggan">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:users" :size="16" />
-						<span>Histori Pelanggan</span>
-					</div>
-				</template>
-
+			<n-tab-pane name="customers" :tab="renderTab('tabler:users', 'Histori Pelanggan')">
 				<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Rekap Kunjungan & Loyalitas Pelanggan">
 					<div class="mb-4 max-w-sm">
 						<n-input
@@ -199,14 +171,7 @@
 			</n-tab-pane>
 
 			<!-- TAB 5: Audit Trail Activity Logs -->
-			<n-tab-pane name="logs" tab="Audit Trail (Activity Logs)">
-				<template #tab>
-					<div class="flex items-center gap-2">
-						<Icon name="tabler:activity" :size="16" />
-						<span>Audit Trail</span>
-					</div>
-				</template>
-
+			<n-tab-pane name="logs" :tab="renderTab('tabler:activity', 'Audit Trail')">
 				<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Rekam Jejak Aktivitas Pengguna (Audit Trail Log)">
 					<n-spin :show="loading">
 						<n-data-table
@@ -262,6 +227,12 @@ const totalBrandUnitsSum = ref(0)
 const workersData = ref<any[]>([])
 const customerHistoryData = ref<any[]>([])
 const activityLogsData = ref<any[]>([])
+
+const renderTab = (icon: string, label: string) => () =>
+	h("div", { class: "flex items-center gap-2" }, [
+		h(Icon, { name: icon, size: 16 }),
+		h("span", label)
+	])
 
 // Columns for Spareparts
 const sparepartColumns: DataTableColumns<any> = [
