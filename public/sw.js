@@ -1,4 +1,4 @@
-const CACHE_NAME = "bslc-service-shell-v1"
+const CACHE_NAME = "avm-service-shell-v1"
 
 self.addEventListener("install", event => {
 	event.waitUntil(

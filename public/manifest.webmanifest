@@ -1,6 +1,6 @@
 {
-	"name": "BSLC Service Operations",
-	"short_name": "BSLC Service",
+	"name": "AVM Service App",
+	"short_name": "AVM Service",
 	"description": "Aplikasi operasional workshop servis.",
 	"start_url": "/",
 	"display": "standalone",
