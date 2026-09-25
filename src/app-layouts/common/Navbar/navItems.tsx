@@ -45,6 +45,16 @@ export default [
 				permission: "read-wa_template"
 			},
 			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-Variable" } }, { default: () => "Pengaturan Toko" }),
+				key: "Masterdata-Variable",
+				permission: "read-variable"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Masterdata-Note" } }, { default: () => "Catatan SOP" }),
+				key: "Masterdata-Note",
+				permission: "read-note"
+			},
+			{
 				label: "User & Akses",
 				key: "Masterdata-UserDanHakAkses",
 				children: [
@@ -60,16 +70,6 @@ export default [
 					}
 				]
 			},
-			{
-				label: () => h(RouterLink, { to: { name: "Masterdata-Variable" } }, { default: () => "Pengaturan Toko" }),
-				key: "Masterdata-Variable",
-				permission: "read-variable"
-			},
-			{
-				label: () => h(RouterLink, { to: { name: "Masterdata-Note" } }, { default: () => "Catatan SOP" }),
-				key: "Masterdata-Note",
-				permission: "read-note"
-			}
 		]
 	},
 	{

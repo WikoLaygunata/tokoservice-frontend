@@ -54,7 +54,7 @@
 					</div>
 
 					<!-- Column Card List -->
-					<div class="flex-1 space-y-3 p-3 overflow-y-auto max-h-[calc(100vh-280px)] min-h-[300px]">
+					<div class="scrollbar-styled flex-1 space-y-3 overflow-y-auto p-3 max-h-[calc(100vh-280px)] min-h-[300px]">
 						<div
 							v-if="!boardData[col.status] || boardData[col.status].length === 0"
 							class="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 p-4 text-center text-xs text-slate-500 dark:border-slate-700/60"
@@ -93,12 +93,12 @@
 							</div>
 
 							<!-- Fault Description -->
-							<div class="rounded bg-slate-50 p-2 text-xs text-slate-600 border border-slate-200 mb-2 line-clamp-2 dark:bg-slate-900/60 dark:text-slate-300 dark:border-slate-700/40">
+							<div class="rounded bg-slate-50 p-2 text-xs text-slate-600 border border-slate-200 mb-2 line-clamp-3 dark:bg-slate-900/60 dark:text-slate-300 dark:border-slate-700/40">
 								<span class="font-semibold text-slate-500 dark:text-slate-400">Kerusakan:</span> {{ ticket.fault_description }}
 							</div>
 
 							<!-- Passcode / Security Badge if present -->
-							<div v-if="ticket.passcode" class="mb-2 flex items-center gap-1 text-[11px] font-mono text-amber-300 bg-amber-50 px-2 py-0.5 rounded border border-amber-800/30">
+							<div v-if="ticket.passcode" class="mb-2 flex items-center gap-1 text-[11px] font-mono text-amber-300 bg-amber-30 px-2 py-0.5 rounded border border-amber-800/30">
 								<Icon name="tabler:lock" :size="12" />
 								<span>PIN/Pola: <b>{{ ticket.passcode }}</b></span>
 							</div>
@@ -131,40 +131,21 @@
 								</n-dropdown>
 
 								<div class="flex items-center gap-1">
-									<!-- WhatsApp Button -->
+									<n-dropdown
+										trigger="click"
+										placement="bottom-end"
+										:options="ticketActionOptions"
+										@select="(key: string) => handleTicketAction(ticket, key)"
+									>
 									<n-button
 										circle
 										size="tiny"
 										quaternary
-										type="success"
-										title="Kirim WhatsApp"
-										@click="$emit('chatWa', ticket)"
+										title="Aksi tiket"
 									>
-										<template #icon><Icon name="tabler:brand-whatsapp" :size="15" color="#22c55e" /></template>
+										<template #icon><Icon name="tabler:dots-vertical" :size="16" /></template>
 									</n-button>
-
-									<!-- Print Job Sheet Button -->
-									<n-button
-										circle
-										size="tiny"
-										quaternary
-										type="warning"
-										title="Cetak Job Sheet A5"
-										@click="$emit('printJobsheet', ticket)"
-									>
-										<template #icon><Icon name="tabler:printer" :size="15" color="#f59e0b" /></template>
-									</n-button>
-
-									<!-- Edit Ticket Button -->
-									<n-button
-										circle
-										size="tiny"
-										quaternary
-										title="Detail & Edit Tiket"
-										@click="$emit('editTicket', ticket)"
-									>
-										<template #icon><Icon name="tabler:edit" :size="15" color="#38bdf8" /></template>
-									</n-button>
+									</n-dropdown>
 								</div>
 							</div>
 						</div>
@@ -181,7 +162,7 @@ import axios from "axios"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { NButton, NDropdown, NSpin, useMessage } from "naive-ui"
-import { computed, onMounted, ref } from "vue"
+import { computed, h, onMounted, ref } from "vue"
 
 dayjs.extend(relativeTime)
 
@@ -261,6 +242,30 @@ const getStatusChangeOptions = (currentStatus: string) => {
 			label: `Pindah ke → ${s}`,
 			key: s
 		}))
+}
+
+const ticketActionOptions = [
+	{
+		label: "Edit / Detail Tiket",
+		key: "edit",
+		icon: () => h(Icon, { name: "tabler:edit", size: 15, color: "#38bdf8" })
+	},
+	{
+		label: "Kirim WhatsApp",
+		key: "whatsapp",
+		icon: () => h(Icon, { name: "tabler:brand-whatsapp", size: 15, color: "#22c55e" })
+	},
+	{
+		label: "Cetak Job Sheet A5",
+		key: "print",
+		icon: () => h(Icon, { name: "tabler:printer", size: 15, color: "#f59e0b" })
+	}
+]
+
+const handleTicketAction = (ticket: any, key: string) => {
+	if (key === "edit") emit("editTicket", ticket)
+	if (key === "whatsapp") emit("chatWa", ticket)
+	if (key === "print") emit("printJobsheet", ticket)
 }
 
 const fetchBoard = async () => {

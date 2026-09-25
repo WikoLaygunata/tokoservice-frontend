@@ -34,6 +34,14 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL + "/api"
 
 const authStore = useAuthStore()
 
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(error => {
+			console.error("Gagal mendaftarkan service worker:", error)
+		})
+	})
+}
+
 axios.defaults.headers.common["Authorization"] = `Bearer ${authStore.token}`
 
 nextTick(async () => {

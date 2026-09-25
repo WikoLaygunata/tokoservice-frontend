@@ -3,11 +3,26 @@
 		:default-width="680"
 		placement="right"
 		:show="active"
+		:class="{ dark: themeStore.isThemeDark }"
 		style="max-width: 100vw"
 		:mask-closable="false"
+		content-class="service-ticket-drawer"
+		@update:show="handleDrawerVisibility"
 		@after-leave="handleClose"
 	>
-		<n-drawer-content :native-scrollbar="false" :title="drawerTitle" closable @close="handleClose">
+		<n-drawer-content
+			:native-scrollbar="false"
+			:title="drawerTitle"
+			:class="{ dark: themeStore.isThemeDark }"
+		>
+			<template #header>
+				<div class="flex w-full items-center justify-between gap-3">
+					<span class="n-drawer-header__main">{{ drawerTitle }}</span>
+					<n-button quaternary circle size="small" aria-label="Tutup drawer" @click="handleClose">
+						<template #icon><Icon name="tabler:x" :size="18" /></template>
+					</n-button>
+				</div>
+			</template>
 			<n-form ref="formRef" :model="formData" :rules="rules" label-placement="top">
 				<!-- Section: Pelanggan -->
 				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
@@ -109,7 +124,7 @@
 						<div
 							v-for="(row, idx) in formData.service_categories"
 							:key="idx"
-							class="flex items-center gap-2 rounded-lg bg-white p-2 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-700/40"
+							class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-100 p-2 dark:border-slate-700/40 dark:bg-slate-800"
 						>
 							<div class="flex-1">
 								<n-select
@@ -180,16 +195,16 @@
 							<Icon name="tabler:camera" :size="18" color="#ec4899" />
 							<span>Foto Dokumentasi Unit</span>
 						</div>
-						<span class="rounded bg-pink-950/60 px-2 py-0.5 text-[11px] font-semibold text-pink-300 border border-pink-800/40">
+						<span class="rounded bg-pink-850/60 px-2 py-0.5 text-[11px] font-semibold text-pink-300 border border-pink-800/40">
 							Auto Compress WebP &lt; 100KB
 						</span>
 					</div>
 
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<!-- Foto 1 -->
-						<div class="rounded-lg border border-slate-200 bg-white p-3 text-center dark:border-slate-700/80 dark:bg-slate-900/60">
+						<div class="rounded-lg border border-slate-200 bg-slate-100 p-3 text-center dark:border-slate-700/80 dark:bg-slate-800">
 							<div class="mb-2 text-xs font-semibold text-slate-700 dark:text-slate-300">Foto 1 (Tampak Depan / Kerusakan)</div>
-							<div v-if="photo1Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 aspect-video flex items-center justify-center bg-slate-100 dark:border-slate-600 dark:bg-black/40">
+							<div v-if="photo1Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 bg-slate-200 aspect-video flex items-center justify-center dark:border-slate-600 dark:bg-slate-950">
 								<img :src="photo1Preview" alt="Foto 1" class="max-h-full max-w-full object-contain" />
 								<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
 									<n-button circle size="tiny" type="error" @click="clearPhoto1">
@@ -219,9 +234,9 @@
 						</div>
 
 						<!-- Foto 2 -->
-						<div class="rounded-lg border border-slate-200 bg-white p-3 text-center dark:border-slate-700/80 dark:bg-slate-900/60">
+						<div class="rounded-lg border border-slate-200 bg-slate-100 p-3 text-center dark:border-slate-700/80 dark:bg-slate-800">
 							<div class="mb-2 text-xs font-semibold text-slate-700 dark:text-slate-300">Foto 2 (Tampak Belakang / Bagian Lain)</div>
-							<div v-if="photo2Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 aspect-video flex items-center justify-center bg-slate-100 dark:border-slate-600 dark:bg-black/40">
+							<div v-if="photo2Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 bg-slate-200 aspect-video flex items-center justify-center dark:border-slate-600 dark:bg-slate-950">
 								<img :src="photo2Preview" alt="Foto 2" class="max-h-full max-w-full object-contain" />
 								<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
 									<n-button circle size="tiny" type="error" @click="clearPhoto2">
@@ -273,6 +288,7 @@
 
 <script setup lang="ts">
 import Icon from "@/components/common/Icon.vue"
+import { useThemeStore } from "@/stores/theme"
 import { useSelectOptionsStore } from "@/stores/selectOptions"
 import { compressImageFile } from "@/utils/imageCompression"
 import { resolveImageUrl } from "@/utils/imageUrl"
@@ -304,6 +320,7 @@ const emit = defineEmits<{
 }>()
 
 const message = useMessage()
+const themeStore = useThemeStore()
 const selectOptionsStore = useSelectOptionsStore()
 
 const formRef = ref<FormInst | null>(null)
@@ -521,6 +538,12 @@ const handleClose = () => {
 	emit("closeDrawer", false)
 }
 
+const handleDrawerVisibility = (visible: boolean) => {
+	if (!visible) {
+		handleClose()
+	}
+}
+
 const handleSubmit = (e: MouseEvent) => {
 	e.preventDefault()
 	formRef.value?.validate(async errors => {
@@ -579,3 +602,17 @@ const handleSubmit = (e: MouseEvent) => {
 	})
 }
 </script>
+
+<style scoped>
+:deep(.service-ticket-drawer) {
+	background-color: var(--n-color) !important;
+	color: var(--n-text-color) !important;
+}
+
+:deep(.service-ticket-drawer .n-drawer-header),
+:deep(.service-ticket-drawer .n-drawer-body-content),
+:deep(.service-ticket-drawer .n-drawer-footer) {
+	background-color: var(--n-color) !important;
+	color: var(--n-text-color) !important;
+}
+</style>

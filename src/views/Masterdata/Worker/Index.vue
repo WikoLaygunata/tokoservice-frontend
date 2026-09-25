@@ -146,15 +146,6 @@ const columns = reactive<DataTableColumns<any>>([
 		}
 	},
 	{
-		title: "Total Tiket Ditangani",
-		key: "service_tickets_count",
-		align: "center",
-		width: 160,
-		render(row) {
-			return row.service_tickets_count ?? row.serviceTickets_count ?? "-"
-		}
-	},
-	{
 		title: "Aksi",
 		key: "actions",
 		align: "center",

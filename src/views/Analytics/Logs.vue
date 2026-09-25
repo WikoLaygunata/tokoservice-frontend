@@ -11,6 +11,7 @@
 					:data="items"
 					:single-column="true"
 					:single-line="false"
+					:scroll-x="800"
 					size="small"
 				/>
 			</n-spin>
@@ -48,10 +49,19 @@ const pagination = reactive({
 })
 const columns: DataTableColumns<any> = [
 	{ title: "No", key: "idx", width: 50, align: "center", render: (_, index) => (pagination.page - 1) * pagination.pageSize + index + 1 },
-	{ title: "Waktu", key: "created_at", render: row => dayjs(row.created_at).format("YYYY-MM-DD HH:mm:ss") },
-	{ title: "User", key: "user_name", render: row => row.user_name || "Sistem" },
-	{ title: "Aksi", key: "action", render: row => h(NTag, { size: "small", type: "info" }, { default: () => row.action }) },
-	{ title: "Deskripsi", key: "description" }
+	{ title: "Waktu", key: "created_at", width: 180, render: row => dayjs(row.created_at).format("YYYY-MM-DD HH:mm:ss") },
+	{ title: "User", key: "user_name", width: 150, render: row => row.user_name || "Sistem" },
+	{ title: "Aksi", key: "action", width: 170, render: row => h(NTag, { size: "small", type: "info" }, { default: () => row.action }) },
+	{
+		title: "Deskripsi",
+		key: "description",
+		width: 250,
+		ellipsis: { tooltip: true },
+		render: row => h("div", {
+			class: "line-clamp-3 whitespace-normal break-words leading-5",
+			title: row.description || "-"
+		}, row.description || "-")
+	}
 ]
 
 const fetchData = async (forceRefresh = false) => {

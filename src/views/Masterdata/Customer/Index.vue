@@ -129,17 +129,9 @@ const columns = reactive<DataTableColumns<any>>([
 		title: "Alamat",
 		key: "address",
 		ellipsis: { tooltip: true },
+		width: 300,
 		render(row) {
 			return row.address || "-"
-		}
-	},
-	{
-		title: "Total Unit Diservis",
-		key: "service_tickets_count",
-		align: "center",
-		width: 140,
-		render(row) {
-			return row.service_tickets_count ?? row.serviceTickets_count ?? "-"
 		}
 	},
 	{

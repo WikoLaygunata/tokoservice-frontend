@@ -42,9 +42,9 @@ const totalQuantity = ref(0)
 const columns: DataTableColumns<any> = [
 	{ title: "No", key: "idx", width: 50, align: "center", render: (_, index) => index + 1 },
 	{ title: "Nama Sparepart / Kategori Jasa", key: "name", width: 250, render: row => h("span", { class: "font-bold text-slate-800 dark:text-slate-100" }, row.name) },
-	{ title: "Total Qty Terpakai", key: "total_quantity", align: "center", render: row => `${row.total_quantity} Pcs` },
-	{ title: "Total Tiket", key: "total_tickets", align: "center", render: row => `${row.total_tickets} Tiket` },
-	{ title: "Pangsa Penggunaan (%)", key: "percentage", align: "center", render: row => `${row.percentage}%` }
+	{ title: "Total Qty Terpakai", key: "total_quantity", align: "center", render: row => `${row.total_quantity} Pcs`, width: 150 },
+	{ title: "Total Tiket", key: "total_tickets", align: "center", render: row => `${row.total_tickets} Tiket`, width: 120 },
+	{ title: "Pangsa Penggunaan (%)", key: "percentage", align: "center", render: row => `${row.percentage}%`, width: 120 }
 ]
 
 const fetchData = async (forceRefresh = false) => {

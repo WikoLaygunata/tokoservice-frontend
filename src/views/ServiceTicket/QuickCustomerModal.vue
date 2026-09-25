@@ -3,6 +3,7 @@
 		v-model:show="show"
 		:mask-closable="false"
 		preset="card"
+		:class="['service-ticket-customer-modal', { dark: themeStore.isThemeDark }]"
 		style="width: 500px; max-width: 95vw; z-index: 2500"
 		title="Tambah Pelanggan Baru Cepat"
 		@after-leave="handleClose"
@@ -33,6 +34,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue"
 import axios from "axios"
+import { useThemeStore } from "@/stores/theme"
 import { NButton, NForm, NFormItem, NInput, NModal, NSpace, useMessage, type FormInst, type FormRules } from "naive-ui"
 
 const props = defineProps<{
@@ -44,6 +46,7 @@ const emit = defineEmits<{
 }>()
 
 const message = useMessage()
+const themeStore = useThemeStore()
 const formRef = ref<FormInst | null>(null)
 const loading = ref(false)
 const show = ref(false)
@@ -94,3 +97,17 @@ const handleSubmit = (e: MouseEvent) => {
 	})
 }
 </script>
+
+<style scoped>
+:deep(.service-ticket-customer-modal) {
+	background-color: var(--n-color) !important;
+	color: var(--n-text-color) !important;
+}
+
+:deep(.service-ticket-customer-modal .n-card-header),
+:deep(.service-ticket-customer-modal .n-card__content),
+:deep(.service-ticket-customer-modal .n-card__footer) {
+	background-color: var(--n-color) !important;
+	color: var(--n-text-color) !important;
+}
+</style>

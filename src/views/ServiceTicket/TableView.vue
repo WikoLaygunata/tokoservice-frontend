@@ -96,6 +96,127 @@
 				@update:sorter="handleSorterChange"
 			/>
 		</n-card>
+
+		<n-modal
+			v-model:show="showDetailModal"
+			preset="card"
+			:class="themeStore.isThemeDark ? '!bg-slate-900' : '!bg-white'"
+			style="width: 680px; max-width: 95vw"
+			:title="`Detail Tiket ${selectedTicket?.ticket_number || ''}`"
+		>
+			<div v-if="selectedTicket" class="space-y-4">
+				<div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailLabelClass" class="text-[11px]">Status</div>
+						<n-tag class="mt-1" size="small" :type="getStatusTagType(selectedTicket.status)">{{ selectedTicket.status }}</n-tag>
+					</div>
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailLabelClass" class="text-[11px]">Pelanggan</div>
+						<div :class="detailValueClass" class="mt-1 text-sm font-semibold">{{ selectedTicket.customer?.name || "-" }}</div>
+						<div :class="detailLabelClass" class="text-xs">{{ selectedTicket.customer?.phone || "-" }}</div>
+					</div>
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailLabelClass" class="text-[11px]">Teknisi</div>
+						<div :class="detailValueClass" class="mt-1 text-sm font-semibold">{{ selectedTicket.worker?.name || "Belum ditugaskan" }}</div>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+					<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailHeadingClass" class="mb-2 text-xs font-bold">Informasi Perangkat</div>
+						<div :class="detailBodyClass" class="space-y-1 text-xs">
+							<div><span :class="detailLabelClass">Merek:</span> {{ selectedTicket.phoneBrand?.name || selectedTicket.phone_brand?.name || "-" }}</div>
+							<div><span :class="detailLabelClass">Model:</span> {{ selectedTicket.model_name || "-" }}</div>
+							<div><span :class="detailLabelClass">IMEI/SN:</span> {{ selectedTicket.imei || "-" }}</div>
+							<div><span :class="detailLabelClass">Passcode:</span> {{ selectedTicket.passcode || "-" }}</div>
+						</div>
+					</div>
+					<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailHeadingClass" class="mb-2 text-xs font-bold">Informasi Servis</div>
+						<div :class="detailBodyClass" class="space-y-1 text-xs">
+							<div><span :class="detailLabelClass">Garansi:</span> {{ selectedTicket.warranty_days ?? 0 }} hari</div>
+							<div><span :class="detailLabelClass">Garansi sampai:</span> {{ selectedTicket.warranty_expires_at ? dayjs(selectedTicket.warranty_expires_at).format("DD MMM YYYY") : "-" }}</div>
+							<div><span :class="detailLabelClass">Mulai dikerjakan:</span> {{ selectedTicket.started_at ? dayjs(selectedTicket.started_at).format("DD MMM YYYY HH:mm") : "-" }}</div>
+							<div><span :class="detailLabelClass">Dibuat:</span> {{ selectedTicket.created_at ? dayjs(selectedTicket.created_at).format("DD MMM YYYY HH:mm") : "-" }}</div>
+							<div><span :class="detailLabelClass">Selesai:</span> {{ selectedTicket.finished_at ? dayjs(selectedTicket.finished_at).format("DD MMM YYYY HH:mm") : "-" }}</div>
+							<div><span :class="detailLabelClass">Durasi:</span> {{ selectedTicket.repair_duration_minutes ? `${selectedTicket.repair_duration_minutes} menit` : "-" }}</div>
+						</div>
+					</div>
+				</div>
+
+				<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+					<div :class="detailHeadingClass" class="mb-2 text-xs font-bold">Kontak Pelanggan</div>
+					<div :class="detailBodyClass" class="space-y-1 text-xs">
+						<div><span :class="detailLabelClass">Nama:</span> {{ selectedTicket.customer?.name || "-" }}</div>
+						<div><span :class="detailLabelClass">Telepon:</span> {{ selectedTicket.customer?.phone || "-" }}</div>
+						<div><span :class="detailLabelClass">Alamat:</span> {{ selectedTicket.customer?.address || "-" }}</div>
+					</div>
+				</div>
+
+				<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+					<div :class="detailHeadingClass" class="mb-2 text-xs font-bold">Jasa Servis & Sparepart</div>
+					<div v-if="ticketServiceCategories.length" class="space-y-2">
+						<div v-for="category in ticketServiceCategories" :key="category.id" :class="detailMutedSurfaceClass" class="flex items-center justify-between rounded-md px-3 py-2 text-xs">
+							<span :class="detailValueClass">{{ category.name }}</span>
+							<span :class="detailLabelClass" class="font-mono">{{ category.pivot?.qty ?? category.qty ?? 1 }} pcs</span>
+						</div>
+					</div>
+					<div v-else :class="detailLabelClass" class="text-sm">Tidak ada jasa atau sparepart.</div>
+				</div>
+
+				<div class="space-y-3">
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailHeadingClass" class="mb-1 text-xs font-bold">Kondisi Fisik</div>
+						<div :class="detailBodyClass" class="whitespace-pre-wrap text-sm">{{ selectedTicket.device_condition || "-" }}</div>
+					</div>
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailHeadingClass" class="mb-1 text-xs font-bold">Keluhan Kerusakan</div>
+						<div :class="detailBodyClass" class="whitespace-pre-wrap text-sm">{{ selectedTicket.fault_description || "-" }}</div>
+					</div>
+					<div :class="detailMutedSurfaceClass" class="rounded-lg border p-3">
+						<div :class="detailHeadingClass" class="mb-1 text-xs font-bold">Catatan Workshop</div>
+						<div :class="detailBodyClass" class="whitespace-pre-wrap text-sm">{{ selectedTicket.notes || "-" }}</div>
+					</div>
+				</div>
+
+				<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+					<div class="mb-2 flex items-center justify-between gap-2">
+						<div :class="detailHeadingClass" class="text-xs font-bold">Riwayat Aktivitas Tiket</div>
+						<n-spin v-if="ticketLogsLoading" size="small" />
+					</div>
+					<div v-if="ticketLogsError" :class="detailBodyClass" class="text-xs">{{ ticketLogsError }}</div>
+					<div v-else-if="!ticketLogsLoading && !ticketActivityLogs.length" :class="detailLabelClass" class="text-sm">
+						Belum ada riwayat aktivitas untuk tiket ini.
+					</div>
+					<div v-else class="max-h-56 space-y-2 overflow-y-auto pr-1">
+						<div
+							v-for="log in ticketActivityLogs"
+							:key="log.id"
+							:class="detailMutedSurfaceClass"
+							class="rounded-md border px-3 py-2"
+						>
+							<div class="flex flex-wrap items-center justify-between gap-2">
+								<n-tag size="small" type="info" :bordered="false">{{ log.action }}</n-tag>
+								<span :class="detailLabelClass" class="text-[11px]">{{ dayjs(log.created_at).format("DD MMM YYYY HH:mm") }}</span>
+							</div>
+							<div :class="detailBodyClass" class="mt-1 text-xs">{{ log.description || "-" }}</div>
+							<div :class="detailLabelClass" class="mt-1 text-[11px]">{{ log.user_name || "Sistem" }}</div>
+						</div>
+					</div>
+				</div>
+
+				<div :class="detailSurfaceClass" class="rounded-lg border p-3">
+					<div :class="detailHeadingClass" class="mb-2 text-xs font-bold">Dokumentasi Foto Unit</div>
+					<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+						<div v-for="(photo, index) in ticketPhotos" :key="photo" :class="detailPhotoClass" class="overflow-hidden rounded-lg border">
+							<div :class="detailBodyClass" class="border-b px-3 py-2 text-xs font-semibold">Foto {{ index + 1 }}</div>
+							<img :src="photo" :alt="`Foto ${index + 1} tiket`" class="h-48 w-full object-contain" :class="themeStore.isThemeDark ? 'bg-slate-950' : 'bg-slate-200'" />
+						</div>
+					</div>
+					<div v-if="!ticketPhotos.length" :class="detailLabelClass" class="text-sm">Belum ada dokumentasi foto.</div>
+				</div>
+			</div>
+		</n-modal>
 	</div>
 </template>
 
@@ -103,9 +224,11 @@
 import Icon from "@/components/common/Icon.vue"
 import { updateScreenMaxHeight } from "@/mixins"
 import { useSelectOptionsStore } from "@/stores/selectOptions"
+import { useThemeStore } from "@/stores/theme"
 import { renderIcon } from "@/utils"
 import { can as canDo } from "@/utils/auth"
 import { exportTicketsToExcel } from "@/utils/excelExport"
+import { resolveImageUrl } from "@/utils/imageUrl"
 import axios from "axios"
 import dayjs from "dayjs"
 import { debounce } from "lodash"
@@ -115,15 +238,18 @@ import {
 	NDataTable,
 	NDropdown,
 	NInput,
+	NModal,
 	NRadioButton,
 	NRadioGroup,
 	NSelect,
+	NSpin,
 	NTag,
 	useDialog,
 	useMessage,
 	type DataTableColumns
 } from "naive-ui"
 import { computed, h, onMounted, reactive, ref, watch } from "vue"
+import { useAnalyticsStore, type ActivityLogItem } from "@/stores/analytics"
 
 const emit = defineEmits<{
 	(e: "editTicket", ticket: any): void
@@ -135,11 +261,58 @@ const emit = defineEmits<{
 const message = useMessage()
 const dialog = useDialog()
 const selectOptionsStore = useSelectOptionsStore()
+const analyticsStore = useAnalyticsStore()
+const themeStore = useThemeStore()
+const detailSurfaceClass = computed(() =>
+	themeStore.isThemeDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-white"
+)
+const detailMutedSurfaceClass = computed(() =>
+	themeStore.isThemeDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-50"
+)
+const detailPhotoClass = computed(() =>
+	themeStore.isThemeDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"
+)
+const detailHeadingClass = computed(() => (themeStore.isThemeDark ? "text-slate-100" : "text-slate-700"))
+const detailValueClass = computed(() => (themeStore.isThemeDark ? "text-slate-100" : "text-slate-800"))
+const detailBodyClass = computed(() => (themeStore.isThemeDark ? "text-slate-300" : "text-slate-600"))
+const detailLabelClass = computed(() => (themeStore.isThemeDark ? "text-slate-400" : "text-slate-500"))
 
 const loading = ref(false)
 const exporting = ref(false)
 const tableData = ref<any[]>([])
-const scrollbarMaxHeight = updateScreenMaxHeight(520)
+const selectedTicket = ref<any | null>(null)
+const showDetailModal = ref(false)
+const ticketActivityLogs = ref<ActivityLogItem[]>([])
+const ticketLogsLoading = ref(false)
+const ticketLogsError = ref("")
+const ticketPhotos = computed(() => {
+	if (!selectedTicket.value) return []
+	return [selectedTicket.value.photo_1_url || selectedTicket.value.photo_1, selectedTicket.value.photo_2_url || selectedTicket.value.photo_2]
+		.filter(Boolean)
+		.map(photo => resolveImageUrl(photo))
+})
+const ticketServiceCategories = computed(() => selectedTicket.value?.serviceCategories || selectedTicket.value?.service_categories || [])
+
+const openTicketDetail = async (ticket: any) => {
+	selectedTicket.value = ticket
+	ticketActivityLogs.value = []
+	ticketLogsError.value = ""
+	showDetailModal.value = true
+	ticketLogsLoading.value = true
+
+	try {
+		const result = await analyticsStore.fetchActivityLogs(
+			{ search: `#${ticket.ticket_number}`, page: 1, pageSize: 100 },
+			true
+		)
+		ticketActivityLogs.value = (result.data || []) as ActivityLogItem[]
+	} catch (error: any) {
+		ticketLogsError.value = error.response?.data?.message || error.message || "Gagal memuat riwayat aktivitas tiket."
+	} finally {
+		ticketLogsLoading.value = false
+	}
+}
+const scrollbarMaxHeight = updateScreenMaxHeight(320)
 
 const filters = reactive({
 	search: "",
@@ -202,7 +375,14 @@ const columns = reactive<DataTableColumns<any>>([
 		sorter: true,
 		width: 170,
 		render(row) {
-			return h("div", { class: "font-mono font-bold text-sky-400 text-xs flex items-center gap-1" }, [
+			return h("button", {
+				type: "button",
+				class: "flex items-center gap-1 font-mono text-xs font-bold text-sky-400 transition-colors hover:text-sky-300 hover:underline",
+				title: "Lihat detail tiket",
+				onClick: () => {
+					openTicketDetail(row)
+				}
+			}, [
 				h(Icon, { name: "tabler:receipt", size: 14 }),
 				row.ticket_number
 			])
@@ -238,7 +418,7 @@ const columns = reactive<DataTableColumns<any>>([
 		key: "fault_description",
 		ellipsis: { tooltip: true },
 		render(row) {
-			return 			h("span", { class: "text-xs text-slate-600 dark:text-slate-300" }, row.fault_description || "-")
+			return 			h("span", { class: "text-xs" }, row.fault_description || "-")
 		}
 	},
 	{

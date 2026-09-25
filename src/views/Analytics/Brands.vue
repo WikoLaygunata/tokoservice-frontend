@@ -35,9 +35,9 @@ const items = ref<any[]>([])
 const totalUnits = ref(0)
 const columns: DataTableColumns<any> = [
 	{ title: "No", key: "idx", width: 50, align: "center", render: (_, index) => index + 1 },
-	{ title: "Merek HP", key: "name" },
-	{ title: "Total Unit Masuk", key: "total_units", align: "center" },
-	{ title: "Persentase", key: "percentage", align: "center", render: row => `${row.percentage}%` }
+	{ title: "Merek HP", key: "name", width: 200 },
+	{ title: "Total Unit Masuk", key: "total_units", align: "center", width: 150 },
+	{ title: "Persentase", key: "percentage", align: "center", width: 120, render: row => `${row.percentage}%` }
 ]
 const fetchData = async (forceRefresh = false) => {
 	loading.value = true

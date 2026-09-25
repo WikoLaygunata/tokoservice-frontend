@@ -106,16 +106,8 @@ const columns = reactive<DataTableColumns<any>>([
 	{
 		title: "Nama Kategori / Jasa Servis",
 		key: "name",
-		sorter: true
-	},
-	{
-		title: "Total Penggunaan",
-		key: "service_tickets_count",
-		align: "center",
-		width: 160,
-		render(row) {
-			return row.service_tickets_count ?? row.serviceTickets_count ?? "-"
-		}
+		sorter: true,
+		width: 180
 	},
 	{
 		title: "Aksi",
