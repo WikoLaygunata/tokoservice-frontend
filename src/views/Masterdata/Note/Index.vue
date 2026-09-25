@@ -47,7 +47,7 @@
 
 				<n-empty v-if="!loading && notes.length === 0" description="Belum ada note" />
 
-				<div v-if="paginationReactive.pageCount > 1" class="mt-2 flex justify-end">
+				<div class="mt-2 flex justify-end">
 					<n-pagination
 						:item-count="paginationReactive.dataCount"
 						:page="paginationReactive.page"

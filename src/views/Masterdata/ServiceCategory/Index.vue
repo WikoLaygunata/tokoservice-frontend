@@ -87,7 +87,7 @@ const paginationReactive = reactive({
 	pageCount: 1,
 	pageSize: 10,
 	showSizePicker: true,
-	pageSizes: [10, 20, 30, 50],
+	pageSizes: [10, 20, 30, 40, 50, 100, 200],
 	dataCount: 0,
 	sorter: {} as any
 })
@@ -154,9 +154,8 @@ const fetchData = async () => {
 		const { data } = await axios.get("service-categories", {
 			params: {
 				page: paginationReactive.page,
-				per_page: paginationReactive.pageSize,
-				sort_by: paginationReactive.sorter?.field,
-				sort_order: paginationReactive.sorter?.order === "ascend" ? "asc" : paginationReactive.sorter?.order === "descend" ? "desc" : undefined,
+				pageSize: paginationReactive.pageSize,
+				sorter: paginationReactive.sorter,
 				search: searchQuery.value
 			}
 		})
@@ -164,6 +163,10 @@ const fetchData = async () => {
 		tableData.value = data.data || []
 		paginationReactive.dataCount = data.total || 0
 		paginationReactive.pageCount = data.last_page || 1
+		if (paginationReactive.page > paginationReactive.pageCount) {
+			paginationReactive.page = 1
+			fetchData()
+		}
 	} catch (error: any) {
 		message.error(error.response?.data?.message || error.message || "Gagal memuat data kategori servis")
 	} finally {

@@ -248,13 +248,13 @@ const fetchData = async () => {
 			columns.splice(10, 1)
 		}
 
-		tableData.value = data.data
+		tableData.value = data.data || []
 		paginationReactive.dataCount = data.total
 		paginationReactive.pageCount = data.last_page
 
 		if (paginationReactive.page > paginationReactive.pageCount) {
 			paginationReactive.page = 1
-			fetchOngoingData()
+			fetchData()
 		}
 	} catch (error) {
 		message.error(error.response?.data?.message || error.message)
@@ -285,10 +285,7 @@ const handlePageChange = page => {
 const handlePageSizeChange = pageSize => {
 	paginationReactive.pageSize = pageSize
 
-	if (pageSize > paginationReactive.dataCount) {
-		paginationReactive.page = 1
-	}
-
+	paginationReactive.page = 1
 	fetchData()
 }
 

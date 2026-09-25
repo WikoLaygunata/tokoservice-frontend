@@ -1,14 +1,14 @@
 <template>
 	<div class="space-y-4">
 		<!-- Board Header & Refresh Bar -->
-		<div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-700/60 bg-slate-800/40 p-3 shadow-sm">
+		<div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 shadow-sm dark:border-slate-700/60 dark:bg-slate-800/40">
 			<div class="flex items-center gap-2">
 				<div class="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">
 					<Icon name="tabler:layout-kanban" :size="18" />
 				</div>
 				<div>
-					<span class="text-sm font-bold text-slate-100">Antrean Aktif Meja Kerja Workshop</span>
-					<span class="ml-2 rounded-full bg-slate-700 px-2 py-0.5 text-xs font-mono font-semibold text-slate-300">
+					<span class="text-sm font-bold text-slate-800 dark:text-slate-100">Antrean Aktif Meja Kerja Workshop</span>
+					<span class="ml-2 rounded-full bg-slate-200 px-2 py-0.5 text-xs font-mono font-semibold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
 						{{ totalActiveTickets }} Unit Aktif
 					</span>
 				</div>
@@ -28,7 +28,7 @@
 				<div
 					v-for="col in columnsConfig"
 					:key="col.status"
-					class="flex flex-col rounded-xl border bg-slate-900/50 shadow-sm"
+					class="flex flex-col rounded-xl border bg-white shadow-sm dark:bg-slate-900/50"
 					:style="{ borderColor: col.borderColor }"
 				>
 					<!-- Column Header -->
@@ -41,7 +41,7 @@
 					>
 						<div class="flex items-center gap-2">
 							<span class="h-2.5 w-2.5 rounded-full" :style="{ backgroundColor: col.accentColor }"></span>
-							<span class="text-xs font-bold uppercase tracking-wider text-slate-100">
+							<span class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-100">
 								{{ col.status }}
 							</span>
 						</div>
@@ -57,7 +57,7 @@
 					<div class="flex-1 space-y-3 p-3 overflow-y-auto max-h-[calc(100vh-280px)] min-h-[300px]">
 						<div
 							v-if="!boardData[col.status] || boardData[col.status].length === 0"
-							class="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-slate-700/60 p-4 text-center text-xs text-slate-500"
+							class="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 p-4 text-center text-xs text-slate-500 dark:border-slate-700/60"
 						>
 							<Icon name="tabler:inbox" :size="24" class="opacity-40 mb-1" />
 							<span>Tidak ada unit</span>
@@ -66,45 +66,45 @@
 						<div
 							v-for="ticket in boardData[col.status]"
 							:key="ticket.id"
-							class="group relative rounded-lg border border-slate-700 bg-slate-800/80 p-3 shadow transition-all hover:border-slate-500 hover:shadow-md"
+							class="group relative rounded-lg border border-slate-200 bg-white p-3 shadow transition-all hover:border-slate-400 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/80 dark:hover:border-slate-500"
 						>
 							<!-- Ticket Number & Brand -->
 							<div class="flex items-start justify-between gap-1 mb-1.5">
 								<div class="font-mono text-xs font-bold text-sky-400">
 									{{ ticket.ticket_number }}
 								</div>
-								<span class="rounded bg-slate-700/80 px-1.5 py-0.5 text-[10px] font-semibold text-slate-200">
+								<span class="rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 dark:bg-slate-700/80 dark:text-slate-200">
 									{{ ticket.phoneBrand?.name || ticket.phone_brand?.name || "Unit" }}
 								</span>
 							</div>
 
 							<!-- Model Name -->
-							<div class="text-sm font-bold text-slate-100 mb-1 leading-snug">
+							<div class="text-sm font-bold text-slate-800 mb-1 leading-snug dark:text-slate-100">
 								{{ ticket.model_name }}
 							</div>
 
 							<!-- Customer Name & Phone -->
-							<div class="flex items-center gap-1 text-xs text-slate-300 mb-2">
+							<div class="flex items-center gap-1 text-xs text-slate-600 mb-2 dark:text-slate-300">
 								<Icon name="tabler:user" :size="13" color="#94a3b8" />
 								<span class="font-medium truncate">{{ ticket.customer?.name || "-" }}</span>
-								<span v-if="ticket.customer?.phone" class="font-mono text-[10px] text-slate-400 truncate">
+								<span v-if="ticket.customer?.phone" class="font-mono text-[10px] text-slate-500 truncate dark:text-slate-400">
 									({{ ticket.customer.phone }})
 								</span>
 							</div>
 
 							<!-- Fault Description -->
-							<div class="rounded bg-slate-900/60 p-2 text-xs text-slate-300 border border-slate-700/40 mb-2 line-clamp-2">
-								<span class="font-semibold text-slate-400">Kerusakan:</span> {{ ticket.fault_description }}
+							<div class="rounded bg-slate-50 p-2 text-xs text-slate-600 border border-slate-200 mb-2 line-clamp-2 dark:bg-slate-900/60 dark:text-slate-300 dark:border-slate-700/40">
+								<span class="font-semibold text-slate-500 dark:text-slate-400">Kerusakan:</span> {{ ticket.fault_description }}
 							</div>
 
 							<!-- Passcode / Security Badge if present -->
-							<div v-if="ticket.passcode" class="mb-2 flex items-center gap-1 text-[11px] font-mono text-amber-300 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800/30">
+							<div v-if="ticket.passcode" class="mb-2 flex items-center gap-1 text-[11px] font-mono text-amber-300 bg-amber-50 px-2 py-0.5 rounded border border-amber-800/30">
 								<Icon name="tabler:lock" :size="12" />
 								<span>PIN/Pola: <b>{{ ticket.passcode }}</b></span>
 							</div>
 
 							<!-- Worker / Technician Badge -->
-							<div class="flex items-center justify-between text-[11px] text-slate-400 mb-3 pt-1 border-t border-slate-700/50">
+							<div class="flex items-center justify-between text-[11px] text-slate-500 mb-3 pt-1 border-t border-slate-200 dark:border-slate-700/50 dark:text-slate-400">
 								<div class="flex items-center gap-1">
 									<Icon name="tabler:tool" :size="13" color="#38bdf8" />
 									<span :class="ticket.worker?.name ? 'text-sky-300 font-semibold' : 'text-slate-500 italic'">

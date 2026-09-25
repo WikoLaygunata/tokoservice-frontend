@@ -1,19 +1,19 @@
 <template>
 	<div class="space-y-6">
 		<!-- Welcome & Header Banner -->
-		<div class="relative overflow-hidden rounded-2xl border border-slate-700/80 bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 p-6 shadow-lg">
-			<div class="relative z-10 flex flex-wrap items-center justify-between gap-4">
+		<div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-50 via-indigo-50 to-slate-50 p-6 shadow-lg dark:border-slate-700/80 dark:from-slate-900 dark:via-indigo-950/60 dark:to-slate-900">
+			<div class="relative z-1 flex flex-wrap items-center justify-between gap-4">
 				<div class="space-y-1">
 					<div class="flex items-center gap-2">
 						<span class="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30">
 							● Workshop Meja Servis Aktif
 						</span>
-						<span class="text-xs font-mono text-slate-400">{{ todayFormatted }}</span>
+						<span class="text-xs font-mono text-slate-500 dark:text-slate-400">{{ todayFormatted }}</span>
 					</div>
-					<h1 class="text-2xl font-black tracking-tight text-white md:text-3xl">
+					<h1 class="text-2xl font-black tracking-tight text-slate-900 md:text-3xl dark:text-white">
 						Selamat Datang, {{ authUser?.name || "Teknisi" }}!
 					</h1>
-					<p class="text-xs text-slate-300 md:text-sm max-w-2xl">
+					<p class="text-xs text-slate-600 md:text-sm max-w-2xl dark:text-slate-300">
 						Sistem Technical Tracking & Operational Workshop Toko Servis Smartphone. Pantau antrean aktif meja teknisi dan rekam jejak pengerjaan secara real-time.
 					</p>
 				</div>
@@ -34,7 +34,7 @@
 		<!-- 4 Top Summary Metric Cards -->
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<!-- Card 1: Antrean Aktif -->
-			<div class="group relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-blue-500/60 hover:shadow-md">
+			<div class="group relative overflow-hidden rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white p-5 shadow-sm transition hover:border-blue-500/60 hover:shadow-md dark:border-blue-500/30 dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900">
 				<div class="flex items-start justify-between">
 					<span class="text-xs font-bold uppercase tracking-wider text-blue-300">Antrean Aktif Meja Kerja</span>
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
@@ -42,10 +42,10 @@
 					</div>
 				</div>
 				<div class="mt-3 flex items-baseline gap-2">
-					<span class="text-3xl font-black tracking-tight text-white font-mono">
+					<span class="text-3xl font-black tracking-tight text-slate-900 font-mono dark:text-white">
 						{{ summaryData.total_antrean_aktif }}
 					</span>
-					<span class="text-xs text-slate-400">Unit Sedang Diproses</span>
+					<span class="text-xs text-slate-500 dark:text-slate-400">Unit Sedang Diproses</span>
 				</div>
 				<div class="mt-2 text-[11px] text-blue-300/80">
 					Diterima, Diagnosis, Menunggu Part, Pengerjaan
@@ -53,7 +53,7 @@
 			</div>
 
 			<!-- Card 2: Selesai Hari Ini -->
-			<div class="group relative overflow-hidden rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-emerald-500/60 hover:shadow-md">
+			<div class="group relative overflow-hidden rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-white p-5 shadow-sm transition hover:border-emerald-500/60 hover:shadow-md dark:border-emerald-500/30 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900">
 				<div class="flex items-start justify-between">
 					<span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Selesai Hari Ini</span>
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
@@ -61,10 +61,10 @@
 					</div>
 				</div>
 				<div class="mt-3 flex items-baseline gap-2">
-					<span class="text-3xl font-black tracking-tight text-white font-mono">
+					<span class="text-3xl font-black tracking-tight text-slate-900 font-mono dark:text-white">
 						{{ summaryData.selesai_hari_ini }}
 					</span>
-					<span class="text-xs text-slate-400">Unit Siap / Diserahkan</span>
+					<span class="text-xs text-slate-500 dark:text-slate-400">Unit Siap / Diserahkan</span>
 				</div>
 				<div class="mt-2 text-[11px] text-emerald-300/80">
 					Total selesai dikerjakan teknisi hari ini
@@ -72,7 +72,7 @@
 			</div>
 
 			<!-- Card 3: Menunggu Diterima -->
-			<div class="group relative overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-amber-500/60 hover:shadow-md">
+			<div class="group relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-white p-5 shadow-sm transition hover:border-amber-500/60 hover:shadow-md dark:border-amber-500/30 dark:from-amber-950/40 dark:via-slate-900 dark:to-slate-900">
 				<div class="flex items-start justify-between">
 					<span class="text-xs font-bold uppercase tracking-wider text-amber-300">Menunggu Pengambilan</span>
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
@@ -80,10 +80,10 @@
 					</div>
 				</div>
 				<div class="mt-3 flex items-baseline gap-2">
-					<span class="text-3xl font-black tracking-tight text-white font-mono">
+					<span class="text-3xl font-black tracking-tight text-slate-900 font-mono dark:text-white">
 						{{ summaryData.menunggu_diterima }}
 					</span>
-					<span class="text-xs text-slate-400">Unit Menunggu Customer</span>
+					<span class="text-xs text-slate-500 dark:text-slate-400">Unit Menunggu Customer</span>
 				</div>
 				<div class="mt-2 text-[11px] text-amber-300/80">
 					Pengerjaan selesai, siap diambil pelanggan
@@ -91,7 +91,7 @@
 			</div>
 
 			<!-- Card 4: Batal Hari Ini -->
-			<div class="group relative overflow-hidden rounded-xl border border-rose-500/30 bg-gradient-to-br from-rose-950/40 via-slate-900 to-slate-900 p-5 shadow-sm transition hover:border-rose-500/60 hover:shadow-md">
+			<div class="group relative overflow-hidden rounded-xl border border-rose-200 bg-gradient-to-br from-rose-50 via-white to-white p-5 shadow-sm transition hover:border-rose-500/60 hover:shadow-md dark:border-rose-500/30 dark:from-rose-950/40 dark:via-slate-900 dark:to-slate-900">
 				<div class="flex items-start justify-between">
 					<span class="text-xs font-bold uppercase tracking-wider text-rose-300">Batal Hari Ini</span>
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/20 text-rose-400">
@@ -99,10 +99,10 @@
 					</div>
 				</div>
 				<div class="mt-3 flex items-baseline gap-2">
-					<span class="text-3xl font-black tracking-tight text-white font-mono">
+					<span class="text-3xl font-black tracking-tight text-slate-900 font-mono dark:text-white">
 						{{ summaryData.batal_hari_ini }}
 					</span>
-					<span class="text-xs text-slate-400">Unit Dibatalkan</span>
+					<span class="text-xs text-slate-500 dark:text-slate-400">Unit Dibatalkan</span>
 				</div>
 				<div class="mt-2 text-[11px] text-rose-300/80">
 					Unit batal servis / sparepart tidak tersedia
@@ -113,25 +113,25 @@
 		<!-- Middle Section: Active Queue Breakdown & Quick Shortcuts -->
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 			<!-- Active Queue Stage Breakdown -->
-			<n-card class="rounded-xl border border-slate-700/60 shadow-sm lg:col-span-2" title="Distribusi Antrean Aktif Meja Teknisi">
+			<n-card class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60 lg:col-span-2" title="Distribusi Antrean Aktif Meja Teknisi">
 				<div class="space-y-4">
 					<div
 						v-for="stage in activeStagesList"
 						:key="stage.name"
-						class="space-y-1.5 rounded-lg border border-slate-700/40 bg-slate-800/40 p-3"
+						class="space-y-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700/40 dark:bg-slate-800/40"
 					>
 						<div class="flex items-center justify-between text-xs">
 							<div class="flex items-center gap-2">
 								<span class="h-2 w-2 rounded-full" :style="{ backgroundColor: stage.color }"></span>
-								<span class="font-bold text-slate-200">{{ stage.name }}</span>
+								<span class="font-bold text-slate-700 dark:text-slate-200">{{ stage.name }}</span>
 							</div>
 							<div class="flex items-center gap-2">
-								<span class="font-mono font-bold text-white text-sm">{{ stage.count }} Unit</span>
-								<span class="text-[10px] text-slate-400">({{ stage.percentage }}%)</span>
+								<span class="font-mono font-bold text-slate-900 text-sm dark:text-white">{{ stage.count }} Unit</span>
+								<span class="text-[10px] text-slate-500 dark:text-slate-400">({{ stage.percentage }}%)</span>
 							</div>
 						</div>
 
-						<div class="h-2 w-full overflow-hidden rounded-full bg-slate-700/60">
+						<div class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700/60">
 							<div
 								class="h-full rounded-full transition-all duration-500"
 								:style="{
@@ -145,19 +145,19 @@
 			</n-card>
 
 			<!-- Quick Actions & Status Summary -->
-			<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Akses Cepat & Navigasi">
+			<n-card class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60" title="Akses Cepat & Navigasi">
 				<div class="space-y-3">
 					<router-link
 						:to="{ name: 'ServiceTickets' }"
-						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-indigo-500 hover:bg-slate-800 hover:shadow"
+						class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3.5 transition hover:border-indigo-500 hover:bg-slate-50 hover:shadow dark:border-slate-700/80 dark:bg-slate-800/60 dark:hover:bg-slate-800"
 					>
 						<div class="flex items-center gap-3">
 							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">
 								<Icon name="tabler:tool" :size="20" />
 							</div>
 							<div>
-								<div class="text-xs font-bold text-slate-100">Meja Kerja Servis HP</div>
-								<div class="text-[11px] text-slate-400">Kanban Board & Riwayat Tiket</div>
+								<div class="text-xs font-bold text-slate-800 dark:text-slate-100">Meja Kerja Servis HP</div>
+								<div class="text-[11px] text-slate-500 dark:text-slate-400">Kanban Board & Riwayat Tiket</div>
 							</div>
 						</div>
 						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
@@ -165,31 +165,31 @@
 
 					<router-link
 						:to="{ name: 'Masterdata-Customer' }"
-						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-sky-500 hover:bg-slate-800 hover:shadow"
+						class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3.5 transition hover:border-sky-500 hover:bg-slate-50 hover:shadow dark:border-slate-700/80 dark:bg-slate-800/60 dark:hover:bg-slate-800"
 					>
 						<div class="flex items-center gap-3">
 							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/20 text-sky-400">
 								<Icon name="tabler:users" :size="20" />
 							</div>
 							<div>
-								<div class="text-xs font-bold text-slate-100">Daftar Pelanggan</div>
-								<div class="text-[11px] text-slate-400">Kontak WhatsApp & Alamat</div>
+								<div class="text-xs font-bold text-slate-800 dark:text-slate-100">Daftar Pelanggan</div>
+								<div class="text-[11px] text-slate-500 dark:text-slate-400">Kontak WhatsApp & Alamat</div>
 							</div>
 						</div>
 						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
 					</router-link>
 
 					<router-link
-						:to="{ name: 'Analytics' }"
-						class="flex items-center justify-between rounded-xl border border-slate-700/80 bg-slate-800/60 p-3.5 transition hover:border-emerald-500 hover:bg-slate-800 hover:shadow"
+						:to="{ name: 'Analytics-Spareparts' }"
+						class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3.5 transition hover:border-emerald-500 hover:bg-slate-50 hover:shadow dark:border-slate-700/80 dark:bg-slate-800/60 dark:hover:bg-slate-800"
 					>
 						<div class="flex items-center gap-3">
 							<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
 								<Icon name="tabler:chart-bar" :size="20" />
 							</div>
 							<div>
-								<div class="text-xs font-bold text-slate-100">Laporan & Analitik</div>
-								<div class="text-[11px] text-slate-400">Ranking Sparepart & Kinerja Teknisi</div>
+								<div class="text-xs font-bold text-slate-800 dark:text-slate-100">Laporan & Analitik</div>
+								<div class="text-[11px] text-slate-500 dark:text-slate-400">Ranking Sparepart & Kinerja Teknisi</div>
 							</div>
 						</div>
 						<Icon name="tabler:chevron-right" :size="16" color="#64748b" />
@@ -199,7 +199,7 @@
 		</div>
 
 		<!-- Bottom Section: Recent Activity Logs Feed -->
-		<n-card class="rounded-xl border border-slate-700/60 shadow-sm" title="Log Aktivitas Terbaru (Audit Trail)">
+		<n-card class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60" title="Log Aktivitas Terbaru (Audit Trail)">
 			<div v-if="recentActivities.length === 0" class="py-8 text-center text-xs text-slate-400">
 				Belum ada aktivitas tercatat.
 			</div>
@@ -208,24 +208,24 @@
 				<div
 					v-for="act in recentActivities"
 					:key="act.id"
-					class="flex items-start justify-between gap-3 rounded-lg border border-slate-700/50 bg-slate-800/40 p-3"
+					class="flex items-start justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700/50 dark:bg-slate-800/40"
 				>
 					<div class="flex items-start gap-3">
 						<div class="mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
 							<Icon name="tabler:activity" :size="15" />
 						</div>
 						<div>
-							<div class="text-xs font-bold text-slate-200">
-								{{ act.user?.name || "Sistem" }}
-								<span class="ml-1 rounded bg-slate-700 px-1.5 py-0.2 text-[10px] font-mono text-slate-300">
+							<div class="text-xs font-bold text-slate-700 dark:text-slate-200">
+								{{ act.user_name || "Sistem" }}
+								<span class="ml-1 rounded bg-slate-200 px-1.5 py-0.2 text-[10px] font-mono text-slate-600 dark:bg-slate-700 dark:text-slate-300">
 									{{ act.action }}
 								</span>
 							</div>
-							<div class="text-xs text-slate-300 mt-0.5">{{ act.description }}</div>
+							<div class="text-xs text-slate-600 mt-0.5 dark:text-slate-300">{{ act.description }}</div>
 						</div>
 					</div>
 
-					<div class="text-right text-[11px] font-mono text-slate-400 whitespace-nowrap">
+					<div class="text-right text-[11px] font-mono text-slate-500 whitespace-nowrap dark:text-slate-400">
 						{{ formatRelativeTime(act.created_at) }}
 					</div>
 				</div>

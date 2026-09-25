@@ -1,12 +1,12 @@
 <template>
 	<div class="space-y-4">
 		<!-- Filter Toolbar -->
-		<n-card size="small" class="rounded-xl border border-slate-700/60 shadow-sm">
+		<n-card size="small" class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60">
 			<div class="space-y-3">
 				<!-- Search and Primary Filters -->
 				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
 					<div>
-						<label class="mb-1 block text-[11px] font-semibold text-slate-400">Pencarian Cepat</label>
+						<label class="mb-1 block text-[11px] font-semibold text-slate-500 dark:text-slate-400">Pencarian Cepat</label>
 						<n-input
 							v-model:value="filters.search"
 							clearable
@@ -17,7 +17,7 @@
 					</div>
 
 					<div>
-						<label class="mb-1 block text-[11px] font-semibold text-slate-400">Filter Status</label>
+						<label class="mb-1 block text-[11px] font-semibold text-slate-500 dark:text-slate-400">Filter Status</label>
 						<n-select
 							v-model:value="filters.status"
 							clearable
@@ -27,7 +27,7 @@
 					</div>
 
 					<div>
-						<label class="mb-1 block text-[11px] font-semibold text-slate-400">Filter Teknisi</label>
+						<label class="mb-1 block text-[11px] font-semibold text-slate-500 dark:text-slate-400">Filter Teknisi</label>
 						<n-select
 							v-model:value="filters.worker_id"
 							clearable
@@ -38,7 +38,7 @@
 					</div>
 
 					<div>
-						<label class="mb-1 block text-[11px] font-semibold text-slate-400">Filter Merek HP</label>
+						<label class="mb-1 block text-[11px] font-semibold text-slate-500 dark:text-slate-400">Filter Merek HP</label>
 						<n-select
 							v-model:value="filters.phone_brand_id"
 							clearable
@@ -50,9 +50,9 @@
 				</div>
 
 				<!-- Date Preset & Actions Row -->
-				<div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-700/50">
+				<div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-700/50">
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="text-xs font-semibold text-slate-400">Periode:</span>
+						<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Periode:</span>
 						<n-radio-group v-model:value="filters.date_preset" size="small" @update:value="onPresetChange">
 							<n-radio-button value="">Semua</n-radio-button>
 							<n-radio-button value="this_month">Bulan Ini</n-radio-button>
@@ -79,7 +79,7 @@
 		</n-card>
 
 		<!-- Data Table -->
-		<n-card size="small" class="rounded-xl border border-slate-700/60 shadow-sm">
+		<n-card size="small" class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60">
 			<n-data-table
 				ref="ticketTableRef"
 				:columns="columns"
@@ -139,7 +139,7 @@ const selectOptionsStore = useSelectOptionsStore()
 const loading = ref(false)
 const exporting = ref(false)
 const tableData = ref<any[]>([])
-const scrollbarMaxHeight = updateScreenMaxHeight(380)
+const scrollbarMaxHeight = updateScreenMaxHeight(520)
 
 const filters = reactive({
 	search: "",
@@ -152,9 +152,9 @@ const filters = reactive({
 const paginationReactive = reactive({
 	page: 1,
 	pageCount: 1,
-	pageSize: 15,
+	pageSize: 10,
 	showSizePicker: true,
-	pageSizes: [15, 30, 50, 100],
+	pageSizes: [10, 20, 50, 100],
 	dataCount: 0,
 	sorter: {} as any
 })
@@ -188,6 +188,15 @@ const getStatusTagType = (status: string) => {
 
 const columns = reactive<DataTableColumns<any>>([
 	{
+		title: "No",
+		key: "row_number",
+		width: 60,
+		align: "center",
+		render(_, index) {
+			return h("span", { class: "font-mono text-xs text-slate-600 dark:text-slate-300" }, (paginationReactive.page - 1) * paginationReactive.pageSize + index + 1)
+		}
+	},
+	{
 		title: "No. Tiket",
 		key: "ticket_number",
 		sorter: true,
@@ -205,8 +214,8 @@ const columns = reactive<DataTableColumns<any>>([
 		width: 170,
 		render(row) {
 			return h("div", { class: "text-xs" }, [
-				h("div", { class: "font-bold text-slate-100" }, row.customer?.name || "-"),
-				h("div", { class: "font-mono text-[11px] text-slate-400" }, row.customer?.phone || "-")
+				h("div", { class: "font-bold text-slate-800 dark:text-slate-100" }, row.customer?.name || "-"),
+				h("div", { class: "font-mono text-[11px] text-slate-500 dark:text-slate-400" }, row.customer?.phone || "-")
 			])
 		}
 	},
@@ -216,7 +225,7 @@ const columns = reactive<DataTableColumns<any>>([
 		width: 180,
 		render(row) {
 			return h("div", { class: "text-xs" }, [
-				h("div", { class: "font-bold text-slate-200" }, [
+				h("div", { class: "font-bold text-slate-700 dark:text-slate-200" }, [
 					h("span", { class: "text-indigo-400 mr-1" }, `[${row.phoneBrand?.name || row.phone_brand?.name || "HP"}]`),
 					row.model_name
 				]),
@@ -229,7 +238,7 @@ const columns = reactive<DataTableColumns<any>>([
 		key: "fault_description",
 		ellipsis: { tooltip: true },
 		render(row) {
-			return h("span", { class: "text-xs text-slate-300" }, row.fault_description || "-")
+			return 			h("span", { class: "text-xs text-slate-600 dark:text-slate-300" }, row.fault_description || "-")
 		}
 	},
 	{
@@ -267,7 +276,7 @@ const columns = reactive<DataTableColumns<any>>([
 		sorter: true,
 		width: 130,
 		render(row) {
-			return row.created_at ? h("span", { class: "font-mono text-xs text-slate-400" }, dayjs(row.created_at).format("YYYY-MM-DD HH:mm")) : "-"
+			return row.created_at ? h("span", { class: "font-mono text-xs text-slate-500 dark:text-slate-400" }, dayjs(row.created_at).format("YYYY-MM-DD HH:mm")) : "-"
 		}
 	},
 	{

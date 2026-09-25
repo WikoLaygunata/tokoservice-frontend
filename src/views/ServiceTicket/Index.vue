@@ -1,17 +1,17 @@
 <template>
 	<div class="space-y-4">
 		<!-- Page Header & Main Action -->
-		<n-card class="rounded-xl border border-slate-700/60 shadow-sm">
+		<n-card class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700/60">
 			<div class="flex flex-wrap items-center justify-between gap-4">
 				<div class="flex items-center gap-3">
 					<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white shadow-md">
 						<Icon name="tabler:tool" :size="24" />
 					</div>
 					<div>
-						<h1 class="text-xl font-black tracking-tight text-slate-100">
+						<h1 class="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100">
 							Meja Operasional Servis HP
 						</h1>
-						<p class="text-xs text-slate-400">
+						<p class="text-xs text-slate-500 dark:text-slate-400">
 							Manajemen antrean perbaikan unit, status pengerjaan teknisi, dan riwayat servis.
 						</p>
 					</div>

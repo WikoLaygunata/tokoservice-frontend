@@ -10,9 +10,9 @@
 		<n-drawer-content :native-scrollbar="false" :title="drawerTitle" closable @close="handleClose">
 			<n-form ref="formRef" :model="formData" :rules="rules" label-placement="top">
 				<!-- Section: Pelanggan -->
-				<div class="mb-4 rounded-xl border border-slate-700/60 bg-slate-800/30 p-4">
+				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
 					<div class="mb-3 flex items-center justify-between">
-						<div class="flex items-center gap-2 font-bold text-slate-200">
+						<div class="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
 							<Icon name="tabler:user" :size="18" color="#38bdf8" />
 							<span>Informasi Pelanggan</span>
 						</div>
@@ -34,8 +34,8 @@
 				</div>
 
 				<!-- Section: Spesifikasi Unit HP -->
-				<div class="mb-4 rounded-xl border border-slate-700/60 bg-slate-800/30 p-4">
-					<div class="mb-3 flex items-center gap-2 font-bold text-slate-200">
+				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
+					<div class="mb-3 flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
 						<Icon name="tabler:device-mobile" :size="18" color="#818cf8" />
 						<span>Informasi Unit Smartphone</span>
 					</div>
@@ -89,9 +89,9 @@
 				</div>
 
 				<!-- Section: Jasa Servis & Sparepart -->
-				<div class="mb-4 rounded-xl border border-slate-700/60 bg-slate-800/30 p-4">
+				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
 					<div class="mb-3 flex items-center justify-between">
-						<div class="flex items-center gap-2 font-bold text-slate-200">
+						<div class="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
 							<Icon name="tabler:tool" :size="18" color="#f59e0b" />
 							<span>Estimasi Jasa Servis & Sparepart</span>
 						</div>
@@ -101,7 +101,7 @@
 						</n-button>
 					</div>
 
-					<div v-if="formData.service_categories.length === 0" class="py-3 text-center text-xs text-slate-400">
+					<div v-if="formData.service_categories.length === 0" class="py-3 text-center text-xs text-slate-500 dark:text-slate-400">
 						Belum ada sparepart / jasa servis yang ditambahkan (opsional).
 					</div>
 
@@ -109,7 +109,7 @@
 						<div
 							v-for="(row, idx) in formData.service_categories"
 							:key="idx"
-							class="flex items-center gap-2 rounded-lg bg-slate-900/60 p-2 border border-slate-700/40"
+							class="flex items-center gap-2 rounded-lg bg-white p-2 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-700/40"
 						>
 							<div class="flex-1">
 								<n-select
@@ -136,8 +136,8 @@
 				</div>
 
 				<!-- Section: Penugasan & Status Meja Kerja -->
-				<div class="mb-4 rounded-xl border border-slate-700/60 bg-slate-800/30 p-4">
-					<div class="mb-3 flex items-center gap-2 font-bold text-slate-200">
+				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
+					<div class="mb-3 flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
 						<Icon name="tabler:user-check" :size="18" color="#34d399" />
 						<span>Penugasan & Status Meja Kerja</span>
 					</div>
@@ -174,9 +174,9 @@
 				</div>
 
 				<!-- Section: Dokumentasi Foto Unit (Otomatis Terkompresi WebP < 100KB) -->
-				<div class="mb-4 rounded-xl border border-slate-700/60 bg-slate-800/30 p-4">
+				<div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700/60 dark:bg-slate-800/30">
 					<div class="mb-2 flex items-center justify-between">
-						<div class="flex items-center gap-2 font-bold text-slate-200">
+						<div class="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
 							<Icon name="tabler:camera" :size="18" color="#ec4899" />
 							<span>Foto Dokumentasi Unit</span>
 						</div>
@@ -187,9 +187,9 @@
 
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<!-- Foto 1 -->
-						<div class="rounded-lg border border-slate-700/80 bg-slate-900/60 p-3 text-center">
-							<div class="mb-2 text-xs font-semibold text-slate-300">Foto 1 (Tampak Depan / Kerusakan)</div>
-							<div v-if="photo1Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-600 aspect-video flex items-center justify-center bg-black/40">
+						<div class="rounded-lg border border-slate-200 bg-white p-3 text-center dark:border-slate-700/80 dark:bg-slate-900/60">
+							<div class="mb-2 text-xs font-semibold text-slate-700 dark:text-slate-300">Foto 1 (Tampak Depan / Kerusakan)</div>
+							<div v-if="photo1Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 aspect-video flex items-center justify-center bg-slate-100 dark:border-slate-600 dark:bg-black/40">
 								<img :src="photo1Preview" alt="Foto 1" class="max-h-full max-w-full object-contain" />
 								<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
 									<n-button circle size="tiny" type="error" @click="clearPhoto1">
@@ -219,9 +219,9 @@
 						</div>
 
 						<!-- Foto 2 -->
-						<div class="rounded-lg border border-slate-700/80 bg-slate-900/60 p-3 text-center">
-							<div class="mb-2 text-xs font-semibold text-slate-300">Foto 2 (Tampak Belakang / Bagian Lain)</div>
-							<div v-if="photo2Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-600 aspect-video flex items-center justify-center bg-black/40">
+						<div class="rounded-lg border border-slate-200 bg-white p-3 text-center dark:border-slate-700/80 dark:bg-slate-900/60">
+							<div class="mb-2 text-xs font-semibold text-slate-700 dark:text-slate-300">Foto 2 (Tampak Belakang / Bagian Lain)</div>
+							<div v-if="photo2Preview" class="relative group mb-2 overflow-hidden rounded-lg border border-slate-300 aspect-video flex items-center justify-center bg-slate-100 dark:border-slate-600 dark:bg-black/40">
 								<img :src="photo2Preview" alt="Foto 2" class="max-h-full max-w-full object-contain" />
 								<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
 									<n-button circle size="tiny" type="error" @click="clearPhoto2">
@@ -275,6 +275,7 @@
 import Icon from "@/components/common/Icon.vue"
 import { useSelectOptionsStore } from "@/stores/selectOptions"
 import { compressImageFile } from "@/utils/imageCompression"
+import { resolveImageUrl } from "@/utils/imageUrl"
 import axios from "axios"
 import {
 	NButton,
@@ -503,10 +504,10 @@ watch(
 				}
 
 				if (d.photo_1_url || d.photo_1) {
-					photo1Preview.value = d.photo_1_url || (d.photo_1?.startsWith("http") ? d.photo_1 : import.meta.env.VITE_API_BASE_URL + "/storage/" + d.photo_1)
+					photo1Preview.value = resolveImageUrl(d.photo_1_url || d.photo_1)
 				}
 				if (d.photo_2_url || d.photo_2) {
-					photo2Preview.value = d.photo_2_url || (d.photo_2?.startsWith("http") ? d.photo_2 : import.meta.env.VITE_API_BASE_URL + "/storage/" + d.photo_2)
+					photo2Preview.value = resolveImageUrl(d.photo_2_url || d.photo_2)
 				}
 			} else {
 				resetForm()

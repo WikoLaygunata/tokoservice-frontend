@@ -73,9 +73,36 @@ export default [
 		]
 	},
 	{
-		label: () => h(RouterLink, { to: { name: "Analytics" } }, { default: () => "Laporan & Analitik" }),
+		label: "Laporan & Analitik",
 		key: "Analytics",
 		icon: renderIcon("tabler:chart-bar"),
-		permission: "view-analytics"
+		permission: "view-analytics",
+		children: [
+			{
+				label: () => h(RouterLink, { to: { name: "Analytics-Spareparts" } }, { default: () => "Penggunaan Sparepart" }),
+				key: "Analytics-Spareparts",
+				permission: "view-analytics"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Analytics-Brands" } }, { default: () => "Distribusi Merek HP" }),
+				key: "Analytics-Brands",
+				permission: "view-analytics"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Analytics-Workers" } }, { default: () => "Performa Teknisi" }),
+				key: "Analytics-Workers",
+				permission: "view-analytics"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Analytics-Customers" } }, { default: () => "Histori Pelanggan" }),
+				key: "Analytics-Customers",
+				permission: "view-analytics"
+			},
+			{
+				label: () => h(RouterLink, { to: { name: "Analytics-Logs" } }, { default: () => "Audit Trail" }),
+				key: "Analytics-Logs",
+				permission: "view-analytics"
+			}
+		]
 	}
 ]

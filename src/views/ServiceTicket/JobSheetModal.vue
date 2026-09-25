@@ -7,8 +7,8 @@
 		@after-leave="handleClose"
 	>
 		<!-- Actions bar -->
-		<div class="mb-4 flex items-center justify-between rounded-lg bg-slate-800/80 p-3 print:hidden">
-			<div class="flex items-center gap-2 text-xs text-slate-300">
+		<div class="mb-4 flex items-center justify-between rounded-lg bg-slate-100 p-3 print:hidden dark:bg-slate-800/80">
+			<div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
 				<Icon name="tabler:printer" :size="18" color="#38bdf8" />
 				<span>Format Cetak: <b>A5 Portrait (148mm x 210mm)</b>. Siap dicetak langsung ke printer workshop.</span>
 			</div>
@@ -19,7 +19,7 @@
 		</div>
 
 		<!-- A5 Job Sheet Container -->
-		<div class="flex justify-center overflow-x-auto p-2 bg-slate-900/40 rounded-xl">
+		<div class="flex justify-center overflow-x-auto rounded-xl bg-slate-100 p-2 dark:bg-slate-900/40">
 			<div id="job-sheet-print-area" class="job-sheet-container bg-white text-slate-900 shadow-xl">
 				<!-- Header Toko & Judul Lembar Kerja -->
 				<div class="border-b-2 border-slate-900 pb-2 mb-2 flex items-start justify-between">

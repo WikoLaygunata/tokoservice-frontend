@@ -1,6 +1,25 @@
 import axios from "axios"
 import { acceptHMRUpdate, defineStore } from "pinia"
 
+function unwrapAnalyticsResponse<T extends Record<string, any>>(payload: T): T {
+	return payload.data && !Array.isArray(payload.data) ? payload.data : payload
+}
+
+type AnalyticsParams = Record<string, any> | undefined
+type AnalyticsResponse = Record<string, any>
+
+function cacheKey(params: AnalyticsParams) {
+	return JSON.stringify(params || {})
+}
+
+const analyticsCache = {
+	spareparts: new Map<string, AnalyticsResponse>(),
+	phoneBrands: new Map<string, AnalyticsResponse>(),
+	workers: new Map<string, AnalyticsResponse>(),
+	customerHistory: new Map<string, AnalyticsResponse>(),
+	activityLogs: new Map<string, AnalyticsResponse>()
+}
+
 export interface DashboardSummary {
 	total_antrean_aktif: number
 	selesai_hari_ini: number
@@ -16,8 +35,7 @@ export interface StatusDistributionItem {
 
 export interface ActivityLogItem {
 	id: number
-	user_id?: number
-	user?: { id: number; name: string; username: string }
+	user_name?: string
 	action: string
 	description: string
 	ip_address?: string
@@ -89,25 +107,55 @@ export const useAnalyticsStore = defineStore("analytics", {
 				this.loadingDashboard = false
 			}
 		},
-		async fetchSpareparts(params?: any) {
+		async fetchSpareparts(params?: AnalyticsParams, forceRefresh = false) {
+			const key = cacheKey(params)
+			if (!forceRefresh && analyticsCache.spareparts.has(key)) {
+				return analyticsCache.spareparts.get(key)!
+			}
 			const { data } = await axios.get("analytics/spareparts", { params })
-			return data.data || data
+			const result = unwrapAnalyticsResponse(data)
+			analyticsCache.spareparts.set(key, result)
+			return result
 		},
-		async fetchPhoneBrands(params?: any) {
+		async fetchPhoneBrands(params?: AnalyticsParams, forceRefresh = false) {
+			const key = cacheKey(params)
+			if (!forceRefresh && analyticsCache.phoneBrands.has(key)) {
+				return analyticsCache.phoneBrands.get(key)!
+			}
 			const { data } = await axios.get("analytics/phone-brands", { params })
-			return data.data || data
+			const result = unwrapAnalyticsResponse(data)
+			analyticsCache.phoneBrands.set(key, result)
+			return result
 		},
-		async fetchWorkers(params?: any) {
+		async fetchWorkers(params?: AnalyticsParams, forceRefresh = false) {
+			const key = cacheKey(params)
+			if (!forceRefresh && analyticsCache.workers.has(key)) {
+				return analyticsCache.workers.get(key)!
+			}
 			const { data } = await axios.get("analytics/workers", { params })
-			return data.data || data
+			const result = unwrapAnalyticsResponse(data)
+			analyticsCache.workers.set(key, result)
+			return result
 		},
-		async fetchCustomerHistory(params?: any) {
+		async fetchCustomerHistory(params?: AnalyticsParams, forceRefresh = false) {
+			const key = cacheKey(params)
+			if (!forceRefresh && analyticsCache.customerHistory.has(key)) {
+				return analyticsCache.customerHistory.get(key)!
+			}
 			const { data } = await axios.get("analytics/customer-history", { params })
-			return data.data || data
+			const result = unwrapAnalyticsResponse(data)
+			analyticsCache.customerHistory.set(key, result)
+			return result
 		},
-		async fetchActivityLogs(params?: any) {
+		async fetchActivityLogs(params?: AnalyticsParams, forceRefresh = false) {
+			const key = cacheKey(params)
+			if (!forceRefresh && analyticsCache.activityLogs.has(key)) {
+				return analyticsCache.activityLogs.get(key)!
+			}
 			const { data } = await axios.get("activity-logs", { params })
-			return data.data || data
+			const result = data.current_page !== undefined ? data : data.data || data
+			analyticsCache.activityLogs.set(key, result)
+			return result
 		}
 	}
 })

@@ -1,7 +1,7 @@
 <template>
 	<footer class="footer" :class="{ boxed }">
 		<div class="wrap flex items-center justify-end gap-3">
-			<div class="copy">© Copyright {{ year }} Wiko-BSLC</div>
+			<div class="copy">© Copyright {{ year }} Wiko</div>
 		</div>
 	</footer>
 </template>

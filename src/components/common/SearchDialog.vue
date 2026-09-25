@@ -149,7 +149,7 @@ const groups = ref<Groups>([
 				title: "Analytics",
 				label: "/analytics",
 				action() {
-					router.push({ name: "Analytics" })
+					router.push({ name: "Analytics-Spareparts" })
 				}
 			},
 			{

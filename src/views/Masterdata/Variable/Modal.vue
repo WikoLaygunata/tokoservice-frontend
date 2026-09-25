@@ -65,6 +65,7 @@
 <script setup>
 import Icon from "@/components/common/Icon.vue"
 import { compressImageFile } from "@/utils/imageCompression"
+import { resolveImageUrl } from "@/utils/imageUrl"
 import axios from "axios"
 import { NButton, NDivider, NForm, NFormItem, NImage, NInput, NModal, NSpace, NUpload, useMessage } from "naive-ui"
 import { computed, ref, toRefs, watch } from "vue"
@@ -123,7 +124,7 @@ const imagePreview = ref("")
 const imagePathUrl = computed(() => {
 	const path = formData.value.image_path
 	if (!path || typeof path !== "string") return ""
-	return path.startsWith("http") ? path : import.meta.env.VITE_IMAGE_BASE_URL + path
+	return resolveImageUrl(path)
 })
 
 const imagePathLabel = computed(() => {

@@ -9,26 +9,26 @@
 	>
 		<div class="space-y-4">
 			<!-- Header Info Pelanggan & Tiket -->
-			<div class="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-700 bg-slate-800/60 p-3">
+			<div class="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/60">
 				<div>
-					<div class="text-xs font-semibold text-slate-400">Penerima Pesan:</div>
-					<div class="text-sm font-bold text-slate-100 flex items-center gap-1.5">
+					<div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Penerima Pesan:</div>
+					<div class="text-sm font-bold text-slate-800 flex items-center gap-1.5 dark:text-slate-100">
 						<span>{{ ticket?.customer?.name || "Pelanggan" }}</span>
 						<span class="font-mono text-xs text-emerald-400">({{ formattedPhone }})</span>
 					</div>
 				</div>
 				<div class="text-right">
-					<div class="text-xs font-semibold text-slate-400">Unit:</div>
+					<div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Unit:</div>
 					<div class="text-xs font-bold text-indigo-300">
 						{{ ticket?.phoneBrand?.name || ticket?.phone_brand?.name }} {{ ticket?.model_name }}
 					</div>
-					<div class="font-mono text-[11px] text-slate-400">{{ ticket?.ticket_number }}</div>
+					<div class="font-mono text-[11px] text-slate-500 dark:text-slate-400">{{ ticket?.ticket_number }}</div>
 				</div>
 			</div>
 
 			<!-- Template Selection -->
 			<div>
-				<label class="block mb-1 text-xs font-semibold text-slate-300">Pilih Template Pesan:</label>
+				<label class="block mb-1 text-xs font-semibold text-slate-600 dark:text-slate-300">Pilih Template Pesan:</label>
 				<n-select
 					v-model:value="selectedTemplateId"
 					:options="templateOptions"
@@ -41,7 +41,7 @@
 
 			<!-- Editable Text Message -->
 			<div>
-				<label class="block mb-1 text-xs font-semibold text-slate-300">Teks Pesan (Dapat Diedit):</label>
+				<label class="block mb-1 text-xs font-semibold text-slate-600 dark:text-slate-300">Teks Pesan (Dapat Diedit):</label>
 				<n-input
 					v-model:value="customMessage"
 					type="textarea"
@@ -51,7 +51,7 @@
 			</div>
 
 			<!-- WhatsApp Bubble Preview -->
-			<div class="rounded-xl border border-emerald-800/50 bg-emerald-950/30 p-3.5">
+			<div class="rounded-xl border border-emerald-800/50 p-3.5">
 				<div class="flex items-center gap-2 mb-2 text-xs font-bold text-emerald-400">
 					<Icon name="tabler:brand-whatsapp" :size="18" />
 					<span>Preview Tampilan di WhatsApp</span>

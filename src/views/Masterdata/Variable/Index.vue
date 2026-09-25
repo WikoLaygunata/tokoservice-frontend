@@ -46,6 +46,7 @@
 <script setup>
 import Can from "@/components/common/Can.vue"
 import Icon from "@/components/common/Icon.vue"
+import { resolveImageUrl } from "@/utils/imageUrl"
 import { renderIcon } from "@/utils"
 import { can as canDo } from "@/utils/auth"
 import axios from "axios"
@@ -116,9 +117,7 @@ const columns = reactive([
 		width: 100,
 		render(row) {
 			if (!row.image_path) return "-"
-			const imgSrc = row.image_path.startsWith("http")
-				? row.image_path
-				: import.meta.env.VITE_IMAGE_BASE_URL + row.image_path
+			const imgSrc = resolveImageUrl(row.image_path)
 			return h(NImage, {
 				src: imgSrc,
 				width: 80,
@@ -190,13 +189,13 @@ const fetchData = async () => {
 			}
 		})
 
-		tableData.value = data.data
+		tableData.value = data.data || []
 		paginationReactive.dataCount = data.total
 		paginationReactive.pageCount = data.last_page
 
 		if (paginationReactive.page > paginationReactive.pageCount) {
 			paginationReactive.page = 1
-			fetchData()
+			await fetchData()
 		}
 	} catch (error) {
 		message.error(error.response?.data?.message || error.message)
@@ -218,10 +217,7 @@ const handlePageChange = page => {
 const handlePageSizeChange = pageSize => {
 	paginationReactive.pageSize = pageSize
 
-	if (pageSize > paginationReactive.dataCount) {
-		paginationReactive.page = 1
-	}
-
+	paginationReactive.page = 1
 	fetchData()
 }
 

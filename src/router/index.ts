@@ -83,8 +83,40 @@ const router = createRouter({
 		{
 			path: "/analytics",
 			name: "Analytics",
-			component: () => import("@/views/Analytics.vue"),
-			meta: { title: "Laporan & Analitik", auth: true, roles: "all" }
+			redirect: { name: "Analytics-Spareparts" },
+			meta: { title: "Laporan & Analitik", auth: true, roles: "all" },
+			children: [
+				{
+					path: "spareparts",
+					name: "Analytics-Spareparts",
+					component: () => import("@/views/Analytics/Spareparts.vue"),
+					meta: { title: "Penggunaan Sparepart", auth: true, roles: "all" }
+				},
+				{
+					path: "brands",
+					name: "Analytics-Brands",
+					component: () => import("@/views/Analytics/Brands.vue"),
+					meta: { title: "Distribusi Merek HP", auth: true, roles: "all" }
+				},
+				{
+					path: "workers",
+					name: "Analytics-Workers",
+					component: () => import("@/views/Analytics/Workers.vue"),
+					meta: { title: "Performa Teknisi", auth: true, roles: "all" }
+				},
+				{
+					path: "customers",
+					name: "Analytics-Customers",
+					component: () => import("@/views/Analytics/Customers.vue"),
+					meta: { title: "Histori Pelanggan", auth: true, roles: "all" }
+				},
+				{
+					path: "logs",
+					name: "Analytics-Logs",
+					component: () => import("@/views/Analytics/Logs.vue"),
+					meta: { title: "Audit Trail", auth: true, roles: "all" }
+				}
+			]
 		},
 		{
 			path: "/login",
